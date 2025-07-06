@@ -13,7 +13,7 @@
 ### 3. Set Up GitHub Webhook
 - Go to: https://github.com/Devall-Digital/artificial-grass-oldham/settings/hooks
 - Click "Add webhook"
-- **Payload URL:** `https://artificial-grass-oldham.com/webhook-deploy.php`
+- **Payload URL:** `https://artificial-grass-oldham.co.uk/webhook-deploy.php`
 - **Content type:** `application/json`
 - **Secret:** Your generated token
 - **Events:** Just the push event

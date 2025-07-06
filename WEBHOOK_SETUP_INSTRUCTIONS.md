@@ -56,7 +56,7 @@ git push origin main
 
 Fill in the following details:
 
-**Payload URL:** `https://artificial-grass-oldham.com/webhook-deploy.php`
+**Payload URL:** `https://artificial-grass-oldham.co.uk/webhook-deploy.php`
 
 **Content type:** `application/json`
 

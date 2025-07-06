@@ -2,7 +2,7 @@
 /**
  * GitHub Webhook Auto-Deploy Script
  * This script automatically pulls updates from GitHub when triggered by a webhook
- * Created for artificial-grass-oldham.com automatic deployment
+ * Created for artificial-grass-oldham.co.uk automatic deployment
  */
 
 // Configuration
