@@ -1,0 +1,8 @@
+# Robots.txt for Artificial Grass Manchester
+User-agent: *
+Allow: /
+Disallow: /leads/
+Disallow: /process-lead.php
+
+# Sitemap location (add your sitemap URL here when created)
+# Sitemap: https://yourdomain.com/sitemap.xml
