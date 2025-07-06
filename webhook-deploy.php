@@ -43,18 +43,38 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die('Method Not Allowed');
 }
 
-// Get the request body
+// Get the request body and headers
 $payload = file_get_contents('php://input');
-$headers = getallheaders();
 
-// Verify GitHub signature (security check)
-if (!isset($headers['X-Hub-Signature-256'])) {
+// Get headers (compatible with different server configurations)
+$headers = [];
+if (function_exists('getallheaders')) {
+    $headers = getallheaders();
+} else {
+    // Alternative method for servers without getallheaders()
+    foreach ($_SERVER as $key => $value) {
+        if (strpos($key, 'HTTP_') === 0) {
+            $header = str_replace('_', '-', substr($key, 5));
+            $headers[$header] = $value;
+        }
+    }
+}
+
+// Verify GitHub signature (case-insensitive header check)
+$githubSignature = null;
+foreach ($headers as $name => $value) {
+    if (strtolower($name) === 'x-hub-signature-256') {
+        $githubSignature = $value;
+        break;
+    }
+}
+
+if (!$githubSignature) {
     logMessage("ERROR: No GitHub signature found");
     http_response_code(401);
     die('Unauthorized: Missing signature');
 }
 
-$githubSignature = $headers['X-Hub-Signature-256'];
 $expectedSignature = 'sha256=' . hash_hmac('sha256', $payload, $SECRET_TOKEN);
 
 if (!hash_equals($expectedSignature, $githubSignature)) {
@@ -91,41 +111,54 @@ if (!is_dir($REPO_PATH)) {
     die('Internal Server Error: Repository path not found');
 }
 
-// Execute git pull
-logMessage("Starting git pull...");
+// Execute git deployment with conflict resolution
+logMessage("Starting deployment process...");
 
 // First, let's check git status
 $statusResult = executeCommand("cd $REPO_PATH && git status --porcelain");
 if (!empty($statusResult['output'])) {
-    logMessage("WARNING: Working directory has changes: " . $statusResult['output']);
+    logMessage("INFO: Working directory has changes: " . $statusResult['output']);
 }
 
-// Fetch latest changes
+// Fetch latest changes first
+logMessage("Fetching latest changes...");
 $fetchResult = executeCommand("cd $REPO_PATH && git fetch origin $BRANCH");
-logMessage("Git fetch result: " . ($fetchResult['success'] ? 'SUCCESS' : 'FAILED'));
 if (!$fetchResult['success']) {
-    logMessage("Git fetch output: " . $fetchResult['output']);
-}
-
-// Pull the changes
-$pullResult = executeCommand("cd $REPO_PATH && git pull origin $BRANCH");
-logMessage("Git pull result: " . ($pullResult['success'] ? 'SUCCESS' : 'FAILED'));
-logMessage("Git pull output: " . $pullResult['output']);
-
-if ($pullResult['success']) {
-    // Get the latest commit info
-    $commitResult = executeCommand("cd $REPO_PATH && git log -1 --pretty=format:'%h - %s (%an, %ar)'");
-    if ($commitResult['success']) {
-        logMessage("Latest commit: " . $commitResult['output']);
-    }
-    
-    logMessage("=== Deployment Completed Successfully ===");
-    echo "Deployment successful! Latest commit: " . ($commitResult['output'] ?? 'Unknown');
-} else {
-    logMessage("ERROR: Git pull failed: " . $pullResult['output']);
+    logMessage("ERROR: Git fetch failed: " . $fetchResult['output']);
     http_response_code(500);
-    die('Deployment failed: ' . $pullResult['output']);
+    die('Deployment failed: Could not fetch changes');
 }
+
+// Stash any local changes to avoid conflicts
+logMessage("Stashing local changes...");
+$stashResult = executeCommand("cd $REPO_PATH && git stash push -m 'Auto-stash before webhook deployment'");
+logMessage("Git stash result: " . ($stashResult['success'] ? 'SUCCESS' : 'INFO'));
+logMessage("Git stash output: " . $stashResult['output']);
+
+// Reset to clean state and pull
+logMessage("Performing hard reset and pull...");
+$resetResult = executeCommand("cd $REPO_PATH && git reset --hard origin/$BRANCH");
+if (!$resetResult['success']) {
+    logMessage("ERROR: Git reset failed: " . $resetResult['output']);
+    http_response_code(500);
+    die('Deployment failed: Could not reset repository');
+}
+
+logMessage("Git reset successful: " . $resetResult['output']);
+
+// Verify the deployment by checking the latest commit
+$commitResult = executeCommand("cd $REPO_PATH && git log -1 --pretty=format:'%h - %s (%an, %ar)'");
+if ($commitResult['success']) {
+    logMessage("Latest commit: " . $commitResult['output']);
+}
+
+// Clean up any untracked files that might cause issues
+logMessage("Cleaning untracked files...");
+$cleanResult = executeCommand("cd $REPO_PATH && git clean -fd");
+logMessage("Git clean result: " . $cleanResult['output']);
+
+logMessage("=== Deployment Completed Successfully ===");
+echo "Deployment successful! Latest commit: " . ($commitResult['output'] ?? 'Unknown');
 
 // Optional: Clear any caches or run additional commands
 // Uncomment the following lines if you need to clear caches or run build commands
