@@ -110,6 +110,9 @@ dist
 # Deployment logs
 deploy.log
 
+# Webhook configuration (contains sensitive secrets)
+webhook-config.php
+
 # Serverless directories
 .serverless/
 
