@@ -1,0 +1,230 @@
+# ===============================================
+# ARTIFICIAL GRASS OLDHAM - HTACCESS CONFIGURATION
+# Security, Performance & SEO Optimizations
+# ===============================================
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# ===============================================
+# SECURITY HEADERS
+# ===============================================
+
+# Prevent clickjacking
+Header always set X-Frame-Options "SAMEORIGIN"
+
+# Prevent XSS attacks
+Header always set X-XSS-Protection "1; mode=block"
+
+# Prevent MIME type sniffing
+Header always set X-Content-Type-Options "nosniff"
+
+# Referrer Policy
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+# Content Security Policy
+Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com;"
+
+# Permissions Policy
+Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+# ===============================================
+# PERFORMANCE OPTIMIZATIONS
+# ===============================================
+
+# Enable compression
+<IfModule mod_deflate.c>
+    # Compress HTML, CSS, JavaScript, Text, XML and fonts
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+</IfModule>
+
+# Browser Caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # Video
+    ExpiresByType video/mp4 "access plus 1 year"
+    ExpiresByType video/mpeg "access plus 1 year"
+    
+    # CSS, JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # Web fonts
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    
+    # Others
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType application/x-shockwave-flash "access plus 1 month"
+    
+    ExpiresDefault "access plus 2 days"
+</IfModule>
+
+# ===============================================
+# URL REWRITES & REDIRECTS
+# ===============================================
+
+# Force HTTPS (uncomment when SSL is installed)
+# RewriteCond %{HTTPS} !=on
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Force www (choose one - with or without www)
+# RewriteCond %{HTTP_HOST} !^www\. [NC]
+# RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+
+# Remove www (alternative - choose one)
+# RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+# RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# Remove trailing slash
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# ===============================================
+# ERROR PAGES
+# ===============================================
+
+ErrorDocument 404 /404.html
+ErrorDocument 403 /403.html
+ErrorDocument 500 /500.html
+
+# ===============================================
+# SECURITY RULES
+# ===============================================
+
+# Protect sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect htaccess file
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Protect PHP files in directories that shouldn't have them
+<FilesMatch "\.(?:inc|bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect leads directory
+<Directory "leads">
+    Order allow,deny
+    Deny from all
+</Directory>
+
+# Disable directory browsing
+Options -Indexes
+
+# Disable server signature
+ServerSignature Off
+
+# ===============================================
+# BLOCK BAD BOTS & REFERRERS
+# ===============================================
+
+# Block bad bots
+RewriteCond %{HTTP_USER_AGENT} ^.*(Baiduspider|HTTrack|Yandex|SemrushBot|DotBot).*$ [NC]
+RewriteRule .* - [F,L]
+
+# Block bad referrers
+RewriteCond %{HTTP_REFERER} ^https?://([^.]+\.)*badsite\.com [NC,OR]
+RewriteCond %{HTTP_REFERER} ^https?://([^.]+\.)*spam\.com [NC]
+RewriteRule .* - [F]
+
+# ===============================================
+# PERFORMANCE RULES
+# ===============================================
+
+# Enable Keep-Alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# Vary: Accept-Encoding header
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|css|xml|gz)$">
+        Header append Vary: Accept-Encoding
+    </FilesMatch>
+</IfModule>
+
+# ===============================================
+# MIME TYPES
+# ===============================================
+
+<IfModule mod_mime.c>
+    AddType text/css .css
+    AddType text/javascript .js
+    AddType application/javascript .js
+    AddType application/x-javascript .js
+    AddType text/html .html .htm
+    AddType text/xml .xml
+    AddType application/xml .xml
+    AddType image/svg+xml .svg
+    AddType application/font-woff .woff
+    AddType application/font-woff2 .woff2
+    AddType application/vnd.ms-fontobject .eot
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+    AddType image/webp .webp
+</IfModule>
+
+# ===============================================
+# PHP SETTINGS (if needed)
+# ===============================================
+
+# Increase PHP limits
+# php_value upload_max_filesize 64M
+# php_value post_max_size 64M
+# php_value max_execution_time 300
+# php_value max_input_time 300
+
+# ===============================================
+# CUSTOM RULES
+# ===============================================
+
+# Redirect old pages (examples)
+# Redirect 301 /old-page.html /new-page.html
+# Redirect 301 /services.html /services.html
+
+# Block access to specific IPs (examples)
+# Deny from 123.456.789.000
+# Deny from 123.456.789.001

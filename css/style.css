@@ -60,6 +60,14 @@ body {
     color: var(--dark-gray);
     background-color: var(--white);
     overflow-x: hidden;
+    cursor: none;
+}
+
+/* Hide default cursor on desktop */
+@media (pointer: fine) {
+    * {
+        cursor: none !important;
+    }
 }
 
 /* Container */
