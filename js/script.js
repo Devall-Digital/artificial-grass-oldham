@@ -537,6 +537,194 @@ document.addEventListener('DOMContentLoaded', function() {
         trackEvent('Error', 'Promise Rejection', e.reason);
     });
     
+    // =================================================================
+    // TESTIMONIALS SLIDER
+    // =================================================================
+    
+    let currentTestimonial = 0;
+    const testimonialTrack = document.querySelector('.testimonial-track');
+    const testimonialItems = document.querySelectorAll('.testimonial-item');
+    
+    window.moveTestimonial = function(direction) {
+        if (!testimonialTrack || testimonialItems.length === 0) return;
+        
+        currentTestimonial += direction;
+        
+        // Loop around
+        if (currentTestimonial >= testimonialItems.length) {
+            currentTestimonial = 0;
+        } else if (currentTestimonial < 0) {
+            currentTestimonial = testimonialItems.length - 1;
+        }
+        
+        // Move slider
+        const offset = -currentTestimonial * 100;
+        testimonialTrack.style.transform = `translateX(${offset}%)`;
+        
+        // Track testimonial interaction
+        trackEvent('Testimonials', 'Slide', currentTestimonial);
+    };
+    
+    // Auto-slide testimonials
+    if (testimonialTrack && testimonialItems.length > 1) {
+        setInterval(() => {
+            moveTestimonial(1);
+        }, 8000); // Change every 8 seconds
+    }
+    
+    // =================================================================
+    // FAQ ACCORDION
+    // =================================================================
+    
+    window.toggleFaq = function(button) {
+        const faqItem = button.parentElement;
+        const isActive = faqItem.classList.contains('active');
+        
+        // Close all FAQ items
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        // Open clicked item if it wasn't already active
+        if (!isActive) {
+            faqItem.classList.add('active');
+            
+            // Track FAQ interaction
+            const question = button.querySelector('span').textContent;
+            trackEvent('FAQ', 'Open', question);
+        }
+    };
+    
+    // =================================================================
+    // ENHANCED SCROLL ANIMATIONS
+    // =================================================================
+    
+    // Counter animation for trust signals
+    function animateCounters() {
+        const counters = document.querySelectorAll('.trust-item');
+        
+        counters.forEach(counter => {
+            const text = counter.querySelector('h4').textContent;
+            const number = text.match(/\d+/);
+            
+            if (number) {
+                const target = parseInt(number[0]);
+                const increment = target / 20;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    
+                    const newText = text.replace(/\d+/, Math.floor(current));
+                    counter.querySelector('h4').textContent = newText;
+                }, 100);
+            }
+        });
+    }
+    
+    // Trigger counter animation when trust signals come into view
+    const trustSignals = document.querySelector('.trust-signals');
+    if (trustSignals) {
+        const trustObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    trustObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        trustObserver.observe(trustSignals);
+    }
+    
+    // =================================================================
+    // ENHANCED FORM INTERACTIONS
+    // =================================================================
+    
+    // Add floating labels effect
+    const formInputs = document.querySelectorAll('.form-group input, .form-group select');
+    
+    formInputs.forEach(input => {
+        // Add focus/blur effects
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            if (this.value === '') {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+        
+        // Check if pre-filled
+        if (input.value !== '') {
+            input.parentElement.classList.add('focused');
+        }
+    });
+    
+    // =================================================================
+    // SOCIAL PROOF NOTIFICATIONS
+    // =================================================================
+    
+    function showSocialProof() {
+        const notifications = [
+            "Someone from Oldham just requested a quote!",
+            "New artificial grass installation completed in Saddleworth",
+            "Another 5-star review from Uppermill customer",
+            "Free quote requested from Delph area"
+        ];
+        
+        const notification = document.createElement('div');
+        notification.className = 'social-proof-notification';
+        notification.innerHTML = `
+            <div class="social-proof-content">
+                <span class="social-proof-icon">🎉</span>
+                <span class="social-proof-text">${notifications[Math.floor(Math.random() * notifications.length)]}</span>
+            </div>
+        `;
+        
+        // Add styles
+        notification.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--accent-green);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 2500;
+            max-width: 300px;
+            animation: slideInLeft 0.5s ease-out;
+            cursor: pointer;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.style.animation = 'slideOutLeft 0.5s ease-out';
+                setTimeout(() => notification.remove(), 500);
+            }
+        }, 4000);
+        
+        // Remove on click
+        notification.addEventListener('click', () => {
+            notification.style.animation = 'slideOutLeft 0.3s ease-out';
+            setTimeout(() => notification.remove(), 300);
+        });
+    }
+    
+    // Show social proof notifications occasionally
+    if (Math.random() > 0.3) { // 70% chance
+        setTimeout(showSocialProof, Math.random() * 30000 + 10000); // Between 10-40 seconds
+    }
+    
     console.log('🎯 Artificial Grass Oldham website loaded successfully!');
 });
 
@@ -555,6 +743,16 @@ animationStyles.textContent = `
     @keyframes slideOutRight {
         from { transform: translateX(0); opacity: 1; }
         to { transform: translateX(100%); opacity: 0; }
+    }
+    
+    @keyframes slideInLeft {
+        from { transform: translateX(-100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOutLeft {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(-100%); opacity: 0; }
     }
     
     .animate-in {
@@ -608,6 +806,29 @@ animationStyles.textContent = `
     .keyboard-navigation *:focus {
         outline: 2px solid #2d5530 !important;
         outline-offset: 2px;
+    }
+    
+    /* Social Proof Notifications */
+    .social-proof-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .social-proof-icon {
+        font-size: 1.2rem;
+    }
+    
+    .social-proof-text {
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    /* Focused form groups */
+    .form-group.focused input,
+    .form-group.focused select {
+        border-color: var(--accent-green);
+        box-shadow: 0 0 0 3px rgba(45, 85, 48, 0.1);
     }
 `;
 
