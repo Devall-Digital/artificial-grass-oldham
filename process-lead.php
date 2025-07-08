@@ -80,7 +80,7 @@ fputcsv($file, array_values($lead_data));
 fclose($file);
 
 // Send email notification (configure these settings)
-$send_email = false; // Set to true when ready for production
+$send_email = true; // Set to true when ready for production
 $your_email = 'info@artificialgrassoldham.co.uk'; // Replace with your email
 $partner_email = 'leads@unreallawns.co.uk'; // Replace with partner's email
 
