@@ -729,6 +729,47 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // =================================================================
+// FAQ FUNCTIONALITY
+// =================================================================
+
+// FAQ toggle function (called from HTML)
+window.toggleFaq = function(button) {
+    const faqItem = button.parentElement;
+    const isActive = faqItem.classList.contains('active');
+    
+    // Close all other FAQ items
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Toggle current item
+    if (!isActive) {
+        faqItem.classList.add('active');
+    }
+    
+    // Track FAQ interaction
+    trackEvent('FAQ', 'Toggle', button.querySelector('span').textContent);
+};
+
+// Testimonials carousel function (called from HTML)
+window.moveTestimonial = function(direction) {
+    const track = document.querySelector('.testimonial-track');
+    if (!track) return;
+    
+    const currentPosition = parseInt(track.style.transform.replace('translateX(', '').replace('%)', '') || 0);
+    const newPosition = currentPosition + (direction * 100);
+    
+    // Limit movement
+    const maxPosition = -200; // For 3 testimonials
+    const clampedPosition = Math.max(maxPosition, Math.min(0, newPosition));
+    
+    track.style.transform = `translateX(${clampedPosition}%)`;
+    
+    // Track testimonial navigation
+    trackEvent('Testimonials', 'Navigate', direction > 0 ? 'Next' : 'Previous');
+};
+
+// =================================================================
 // CSS ANIMATIONS (dynamically added)
 // =================================================================
 
