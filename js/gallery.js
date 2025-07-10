@@ -397,7 +397,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Future: Open lightbox modal
-                console.log('Lightbox feature - coming soon');
+                // Development logging
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log('Lightbox feature - coming soon');
+        }
             });
         });
     }
@@ -438,7 +441,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 trackEvent('Performance', 'Gallery Load Time', Math.round(loadTime));
             }
             
+            // Development logging
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
             console.log(`Gallery loaded in ${Math.round(loadTime)}ms`);
+        }
         });
         
         // Monitor scroll performance
@@ -474,18 +480,56 @@ document.addEventListener('DOMContentLoaded', function() {
     // INITIALIZATION
     // =================================================================
     
-    // Initialize all gallery features
-    initBeforeAfterSliders();
-    initGalleryFiltering();
-    initLoadMore();
-    initLazyLoading();
-    initScrollAnimations();
-    initTestimonialInteractions();
-    initGalleryLightbox();
-    initKeyboardNavigation();
-    initPerformanceMonitoring();
+    // Initialize all gallery features with error handling
+    try {
+        initBeforeAfterSliders();
+        initGalleryFiltering();
+        initLoadMore();
+        initLazyLoading();
+        initScrollAnimations();
+        initTestimonialInteractions();
+        initGalleryLightbox();
+        initKeyboardNavigation();
+        initPerformanceMonitoring();
+    } catch (error) {
+        // Log error for debugging
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.error('Gallery initialization error:', error);
+        }
+        
+        // Track error for analytics
+        if (typeof trackEvent !== 'undefined') {
+            trackEvent('Error', 'Gallery Init', error.message || 'Unknown error');
+        }
+        
+        // Show user-friendly error message
+        const errorMessage = document.createElement('div');
+        errorMessage.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff4444;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 10000;
+            font-size: 14px;
+        `;
+        errorMessage.textContent = 'Gallery loading issue. Please refresh the page.';
+        document.body.appendChild(errorMessage);
+        
+        // Remove error message after 5 seconds
+        setTimeout(() => {
+            if (errorMessage.parentNode) {
+                errorMessage.parentNode.removeChild(errorMessage);
+            }
+        }, 5000);
+    }
     
-    console.log('🖼️ Gallery functionality initialized successfully!');
+    // Development logging
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log('🖼️ Gallery functionality initialized successfully!');
+    }
     
     // Track gallery page view
     if (typeof trackEvent !== 'undefined') {

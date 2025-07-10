@@ -588,6 +588,32 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         }
 
+        // Performance monitoring for animations
+        let animationFrameCount = 0;
+        let lastTime = performance.now();
+        
+        function monitorAnimationPerformance() {
+            animationFrameCount++;
+            const currentTime = performance.now();
+            
+            if (currentTime - lastTime >= 1000) { // Check every second
+                const fps = Math.round((animationFrameCount * 1000) / (currentTime - lastTime));
+                
+                // Track performance if FPS drops below 30
+                if (fps < 30 && typeof trackEvent !== 'undefined') {
+                    trackEvent('Performance', 'Low FPS', 'Animations', fps);
+                }
+                
+                animationFrameCount = 0;
+                lastTime = currentTime;
+            }
+            
+            requestAnimationFrame(monitorAnimationPerformance);
+        }
+        
+        // Start performance monitoring
+        monitorAnimationPerformance();
+
         // Throttled mouse move for performance
         const throttledMouseMove = throttle(function(e) {
             // Additional mouse move effects can go here
