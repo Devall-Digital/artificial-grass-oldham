@@ -1,9 +1,9 @@
 /* ===============================================
-   ARTIFICIAL GRASS OLDHAM - ADVANCED ANIMATIONS
-   Sophisticated animations inspired by coming soon page
+   ARTIFICIAL GRASS OLDHAM - FUTURISTIC ANIMATIONS
+   Mobile-Optimized, Performance-Focused Animations
    =============================================== */
 
-/* Floating Shapes Background Animation */
+/* Optimized Background Animation - Reduced for Mobile */
 .background-animation {
     position: fixed;
     top: 0;
@@ -13,6 +13,9 @@
     z-index: -1;
     overflow: hidden;
     pointer-events: none;
+    /* Optimize for mobile */
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .floating-shapes {
@@ -23,87 +26,97 @@
 
 .shape {
     position: absolute;
-    background: rgba(45, 85, 48, 0.03);
-    border: 1px solid rgba(45, 85, 48, 0.1);
+    background: rgba(0, 255, 136, 0.03);
+    border: 1px solid rgba(0, 255, 136, 0.1);
     backdrop-filter: blur(1px);
     will-change: transform;
+    /* Optimize for mobile */
+    transform: translateZ(0);
 }
 
 .shape-1 {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     top: 10%;
     left: -10%;
-    animation: float1 20s infinite ease-in-out;
+    animation: float1 25s infinite ease-in-out;
 }
 
 .shape-2 {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     top: 60%;
     right: -5%;
-    animation: float2 25s infinite ease-in-out;
+    animation: float2 30s infinite ease-in-out;
     transform: rotate(45deg);
 }
 
 .shape-3 {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
     bottom: 20%;
     left: 20%;
-    animation: float3 30s infinite ease-in-out;
+    animation: float3 35s infinite ease-in-out;
 }
 
 .shape-4 {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     top: 30%;
     right: 30%;
-    animation: float4 22s infinite ease-in-out;
+    animation: float4 28s infinite ease-in-out;
     transform: rotate(45deg);
 }
 
 .shape-5 {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     bottom: 40%;
     right: 10%;
-    animation: float5 28s infinite ease-in-out;
+    animation: float5 32s infinite ease-in-out;
 }
 
-/* Custom Cursor Effect */
-.cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #000;
+.shape-6 {
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease, border-color 0.3s ease;
-    mix-blend-mode: difference;
+    top: 80%;
+    left: 10%;
+    animation: float6 38s infinite ease-in-out;
+    background: rgba(0, 255, 136, 0.02);
+    border: 1px solid rgba(0, 255, 136, 0.08);
 }
 
-.cursor-follower {
-    width: 40px;
-    height: 40px;
-    background: rgba(45, 85, 48, 0.1);
+.shape-7 {
+    width: 50px;
+    height: 50px;
+    top: 15%;
+    left: 80%;
+    animation: float7 42s infinite ease-in-out;
+    background: rgba(0, 255, 136, 0.03);
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    transform: rotate(30deg);
+}
+
+/* Morphing Blob Animation */
+.morphing-blob {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
     border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.3s ease;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: morph 20s ease-in-out infinite;
+    filter: blur(40px);
+    opacity: 0.3;
 }
 
-.cursor.hover {
-    transform: scale(1.5);
-    border-color: var(--accent-green);
-}
-
-/* Text Reveal Animations */
+/* Enhanced Text Reveal Animations */
 .reveal-text {
     overflow: hidden;
     position: relative;
@@ -139,10 +152,10 @@
     animation: shimmer 3s ease-in-out infinite;
 }
 
-/* Glitch Effect */
+/* Glitch Effect - Reduced for Performance */
 .glitch {
     position: relative;
-    animation: glitch 2s ease-in-out infinite alternate-reverse;
+    animation: glitch 3s ease-in-out infinite alternate-reverse;
 }
 
 .glitch::before,
@@ -156,18 +169,18 @@
 }
 
 .glitch::before {
-    animation: glitch-1 0.5s ease-in-out infinite alternate-reverse;
-    color: #00ff00;
+    animation: glitch-1 0.8s ease-in-out infinite alternate-reverse;
+    color: var(--accent-green);
     z-index: -1;
 }
 
 .glitch::after {
-    animation: glitch-2 0.5s ease-in-out infinite alternate-reverse;
-    color: #ff00ff;
+    animation: glitch-2 0.8s ease-in-out infinite alternate-reverse;
+    color: var(--accent-blue);
     z-index: -2;
 }
 
-/* Parallax Layers */
+/* Parallax Layers - Optimized */
 .parallax-container {
     position: relative;
     overflow: hidden;
@@ -180,26 +193,16 @@
     width: 100%;
     height: 100%;
     will-change: transform;
+    transform: translateZ(0);
 }
 
 .parallax-layer-1 { transform: translateZ(-1px) scale(2); }
 .parallax-layer-2 { transform: translateZ(-2px) scale(3); }
 .parallax-layer-3 { transform: translateZ(-3px) scale(4); }
 
-/* Morphing Blob Animation */
-.blob {
-    position: absolute;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-green), var(--light-green));
-    opacity: 0.1;
-    animation: morph 20s ease-in-out infinite;
-}
-
 /* Loading Progress Animation */
 .loading-progress {
     position: relative;
-    height: 2px;
-    background: rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
@@ -207,72 +210,87 @@
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: var(--primary-black);
-    animation: loading 2s ease-in-out infinite;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 2s ease-in-out infinite;
 }
 
 /* Stagger Animation */
 .stagger-animation > * {
     opacity: 0;
     transform: translateY(30px);
-    animation: staggerIn 0.6s ease forwards;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.stagger-animation > *:nth-child(1) { animation-delay: 0.1s; }
-.stagger-animation > *:nth-child(2) { animation-delay: 0.2s; }
-.stagger-animation > *:nth-child(3) { animation-delay: 0.3s; }
-.stagger-animation > *:nth-child(4) { animation-delay: 0.4s; }
-.stagger-animation > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-animation > *:nth-child(1) { transition-delay: 0.1s; }
+.stagger-animation > *:nth-child(2) { transition-delay: 0.2s; }
+.stagger-animation > *:nth-child(3) { transition-delay: 0.3s; }
+.stagger-animation > *:nth-child(4) { transition-delay: 0.4s; }
+.stagger-animation > *:nth-child(5) { transition-delay: 0.5s; }
 
-/* Animation Delay Utility Classes */
+/* Animation Delay Classes */
 .animation-delay-1 { animation-delay: 0.1s; }
 .animation-delay-2 { animation-delay: 0.2s; }
 .animation-delay-3 { animation-delay: 0.3s; }
 .animation-delay-4 { animation-delay: 0.4s; }
 .animation-delay-5 { animation-delay: 0.5s; }
 
-/* Keyframes */
+/* Keyframe Animations - Optimized */
 @keyframes float1 {
     0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    25% { transform: translate(30px, -30px) rotate(90deg); }
-    50% { transform: translate(-20px, -60px) rotate(180deg); }
-    75% { transform: translate(-50px, -30px) rotate(270deg); }
+    25% { transform: translate(15px, -20px) rotate(90deg); }
+    50% { transform: translate(-10px, -15px) rotate(180deg); }
+    75% { transform: translate(-20px, 10px) rotate(270deg); }
 }
 
 @keyframes float2 {
     0%, 100% { transform: translate(0, 0) rotate(45deg); }
-    25% { transform: translate(-40px, 40px) rotate(135deg); }
-    50% { transform: translate(-80px, -20px) rotate(225deg); }
-    75% { transform: translate(-40px, -60px) rotate(315deg); }
+    33% { transform: translate(20px, -20px) rotate(135deg); }
+    66% { transform: translate(-15px, -10px) rotate(225deg); }
 }
 
 @keyframes float3 {
-    0%, 100% { transform: translate(0, 0); }
-    33% { transform: translate(40px, -40px); }
-    66% { transform: translate(-30px, -70px); }
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(10px, -15px) rotate(180deg); }
 }
 
 @keyframes float4 {
     0%, 100% { transform: translate(0, 0) rotate(45deg); }
-    50% { transform: translate(-30px, 50px) rotate(225deg); }
+    50% { transform: translate(-10px, 10px) rotate(225deg); }
 }
 
 @keyframes float5 {
-    0%, 100% { transform: translate(0, 0); }
-    25% { transform: translate(20px, -30px); }
-    50% { transform: translate(-25px, -50px); }
-    75% { transform: translate(30px, -20px); }
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(8px, -12px) rotate(90deg); }
+    50% { transform: translate(-6px, -8px) rotate(180deg); }
+    75% { transform: translate(-12px, 6px) rotate(270deg); }
+}
+
+@keyframes float6 {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(12px, -18px) rotate(90deg); }
+    50% { transform: translate(-9px, -12px) rotate(180deg); }
+    75% { transform: translate(-15px, 9px) rotate(270deg); }
+}
+
+@keyframes float7 {
+    0%, 100% { transform: translate(0, 0) rotate(30deg); }
+    33% { transform: translate(15px, -15px) rotate(120deg); }
+    66% { transform: translate(-12px, -8px) rotate(210deg); }
 }
 
 @keyframes shimmer {
-    0% { left: -100%; }
-    100% { left: 100%; }
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 @keyframes revealText {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
     to {
         opacity: 1;
         transform: translateY(0);
@@ -280,57 +298,57 @@
 }
 
 @keyframes glitch {
-    0% { transform: translate(0); }
+    0%, 100% { transform: translate(0); }
     20% { transform: translate(-2px, 2px); }
     40% { transform: translate(-2px, -2px); }
     60% { transform: translate(2px, 2px); }
     80% { transform: translate(2px, -2px); }
-    100% { transform: translate(0); }
 }
 
 @keyframes glitch-1 {
-    0% { clip-path: inset(40% 0 61% 0); transform: translate(-2px, -2px); }
-    20% { clip-path: inset(92% 0 1% 0); transform: translate(2px, 2px); }
-    40% { clip-path: inset(43% 0 1% 0); transform: translate(-2px, 2px); }
-    60% { clip-path: inset(25% 0 58% 0); transform: translate(2px, -2px); }
-    80% { clip-path: inset(54% 0 7% 0); transform: translate(-2px, -2px); }
-    100% { clip-path: inset(58% 0 43% 0); transform: translate(2px, 2px); }
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-1px, 1px); }
+    40% { transform: translate(-1px, -1px); }
+    60% { transform: translate(1px, 1px); }
+    80% { transform: translate(1px, -1px); }
 }
 
 @keyframes glitch-2 {
-    0% { clip-path: inset(65% 0 8% 0); transform: translate(2px, -2px); }
-    20% { clip-path: inset(31% 0 2% 0); transform: translate(-2px, 2px); }
-    40% { clip-path: inset(39% 0 25% 0); transform: translate(2px, 2px); }
-    60% { clip-path: inset(62% 0 29% 0); transform: translate(-2px, -2px); }
-    80% { clip-path: inset(18% 0 33% 0); transform: translate(2px, -2px); }
-    100% { clip-path: inset(29% 0 17% 0); transform: translate(-2px, 2px); }
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(1px, -1px); }
+    40% { transform: translate(1px, 1px); }
+    60% { transform: translate(-1px, -1px); }
+    80% { transform: translate(-1px, 1px); }
 }
 
 @keyframes morph {
-    0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-    25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-    50% { border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }
-    75% { border-radius: 40% 60% 60% 40% / 70% 30% 40% 60%; }
+    0%, 100% { border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }
+    25% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 80%; }
+    75% { border-radius: 40% 30% 60% 70% / 70% 40% 60% 30%; }
 }
 
 @keyframes loading {
-    0% { left: -100%; }
-    50% { left: 100%; }
-    100% { left: 100%; }
+    0% { width: 0%; }
+    100% { width: 100%; }
 }
 
 @keyframes staggerIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* Intersection Observer Animations */
+/* Animation Classes */
 .fade-in-up {
     opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fade-in-up.animate {
@@ -341,7 +359,7 @@
 .scale-in {
     opacity: 0;
     transform: scale(0.8);
-    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .scale-in.animate {
@@ -351,8 +369,8 @@
 
 .slide-in-left {
     opacity: 0;
-    transform: translateX(-100px);
-    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform: translateX(-30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-in-left.animate {
@@ -362,8 +380,8 @@
 
 .slide-in-right {
     opacity: 0;
-    transform: translateX(100px);
-    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform: translateX(30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-in-right.animate {
@@ -371,11 +389,194 @@
     transform: translateX(0);
 }
 
-/* Reduced Motion Support */
+/* Pulse Animation */
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+    }
+}
+
+/* Glow Pulse Animation */
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+    }
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translate3d(0, 0, 0);
+    }
+    40%, 43% {
+        transform: translate3d(0, -30px, 0);
+    }
+    70% {
+        transform: translate3d(0, -15px, 0);
+    }
+    90% {
+        transform: translate3d(0, -4px, 0);
+    }
+}
+
+/* Rotate Animation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Slide Up Animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fade In Scale Animation */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Accessibility and Performance Optimizations */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+    
+    .floating-shapes {
+        display: none;
+    }
+    
+    .morphing-blob {
+        display: none;
+    }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    /* Reduce animation complexity on mobile */
+    .shape {
+        display: none;
+    }
+    
+    .shape-1,
+    .shape-2 {
+        display: block;
+        animation-duration: 40s;
+    }
+    
+    .morphing-blob {
+        width: 200px;
+        height: 200px;
+        filter: blur(30px);
+    }
+    
+    /* Reduce animation intensity */
+    .glitch {
+        animation: none;
+    }
+    
+    .glitch::before,
+    .glitch::after {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Further reduce animations on small screens */
+    .floating-shapes {
+        display: none;
+    }
+    
+    .morphing-blob {
+        display: none;
+    }
+    
+    /* Disable complex animations */
+    .reveal-text span {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Disable hover animations on touch devices */
+    .shape:hover {
+        transform: none;
+    }
+    
+    /* Reduce animation complexity */
+    .floating-shapes {
+        opacity: 0.5;
+    }
+}
+
+/* High Performance Mode */
+@media (prefers-reduced-motion: no-preference) {
+    /* Enable hardware acceleration */
+    .shape,
+    .morphing-blob,
+    .parallax-layer {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+}
+
+/* Battery Saver Mode */
+@media (prefers-reduced-motion: reduce) {
+    .background-animation {
+        display: none;
+    }
+    
+    .floating-shapes {
+        display: none;
+    }
+    
+    .morphing-blob {
+        display: none;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .background-animation,
+    .floating-shapes,
+    .morphing-blob,
+    .shape {
+        display: none !important;
+    }
+    
+    * {
+        animation: none !important;
+        transition: none !important;
     }
 }
