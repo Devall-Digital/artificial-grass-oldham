@@ -60,14 +60,6 @@ body {
     color: var(--dark-gray);
     background-color: var(--white);
     overflow-x: hidden;
-    cursor: none;
-}
-
-/* Hide default cursor on desktop */
-@media (pointer: fine) {
-    * {
-        cursor: none !important;
-    }
 }
 
 /* Container */
@@ -236,6 +228,21 @@ p {
     align-items: center;
 }
 
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.nav-toggle span {
+    width: 25px;
+    height: 3px;
+    background: var(--primary-black);
+    transition: all var(--transition-normal);
+}
+
 .nav-link {
     text-decoration: none;
     color: var(--dark-gray);
@@ -308,7 +315,7 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+    background: linear-gradient(135deg, #2d5530 0%, #4a7c4e 50%, #2d5530 100%);
     z-index: -2;
 }
 
@@ -327,7 +334,7 @@ p {
 
 .hero-content {
     display: grid;
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: 1fr minmax(350px, 400px);
     gap: 60px;
     align-items: center;
 }
@@ -429,6 +436,15 @@ p {
     box-shadow: 0 0 0 3px rgba(45, 85, 48, 0.1);
 }
 
+/* Focus indicators for accessibility */
+.btn:focus,
+.nav-link:focus,
+.form-group input:focus,
+.form-group select:focus {
+    outline: 2px solid var(--accent-green);
+    outline-offset: 2px;
+}
+
 .form-disclaimer {
     font-size: 0.85rem;
     color: var(--medium-gray);
@@ -458,7 +474,7 @@ p {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
 }
 
@@ -481,6 +497,16 @@ p {
     font-size: 3rem;
     margin-bottom: 20px;
     display: block;
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: var(--white);
+    font-size: 2rem;
 }
 
 .service-card h3 {
@@ -541,6 +567,14 @@ p {
 .benefit-icon {
     font-size: 2rem;
     flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    background: rgba(45, 85, 48, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
 }
 
 .benefit-item h4 {
@@ -569,7 +603,7 @@ p {
 
 .areas-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
 }
 
@@ -806,6 +840,7 @@ p {
         padding-top: 50px;
         transition: left var(--transition-normal);
         box-shadow: var(--shadow-medium);
+        z-index: 999;
     }
     
     .nav-menu.active {
@@ -832,6 +867,7 @@ p {
         grid-template-columns: 1fr;
         gap: 40px;
         text-align: center;
+        padding: 0 20px;
     }
     
     .hero-buttons {
@@ -851,6 +887,17 @@ p {
     
     .benefits-image {
         order: -1;
+    }
+    
+    .benefit-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .benefit-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
     }
     
     .services-grid {
@@ -879,6 +926,10 @@ p {
     
     .form-row {
         grid-template-columns: 1fr;
+    }
+    
+    .form-card {
+        margin: 0 10px;
     }
     
     :root {
@@ -936,6 +987,29 @@ p {
     .btn-primary {
         border: 2px solid var(--primary-black);
     }
+    
+    .service-icon,
+    .benefit-icon,
+    .trust-icon {
+        border: 2px solid var(--accent-green);
+    }
+}
+
+/* Skip to content link for accessibility */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--accent-green);
+    color: var(--white);
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 1001;
+}
+
+.skip-link:focus {
+    top: 6px;
 }
 
 /* Testimonials Section */
@@ -1060,6 +1134,14 @@ p {
     font-size: 3rem;
     margin-bottom: 20px;
     display: block;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
 }
 
 .trust-item h4 {
