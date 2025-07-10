@@ -240,7 +240,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // }, 3000);
                 
             } catch (error) {
-                console.error('Form submission error:', error);
+                // Log error for debugging
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.error('Form submission error:', error);
+        }
                 
                 // Show error message
                 showNotification(error.message, 'error');
@@ -387,8 +390,10 @@ document.addEventListener('DOMContentLoaded', function() {
             fbq('track', 'Lead');
         }
         
-        // Console log for debugging (remove in production)
-        console.log('Event tracked:', { category, action, label, value });
+        // Development logging (remove in production)
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log('Event tracked:', { category, action, label, value });
+        }
     }
     
     // Track page view
@@ -507,6 +512,42 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.remove('keyboard-navigation');
     });
     
+    // Enhanced accessibility: Announce dynamic content changes
+    function announceToScreenReader(message) {
+        const announcement = document.createElement('div');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.setAttribute('aria-atomic', 'true');
+        announcement.style.cssText = `
+            position: absolute;
+            left: -10000px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        `;
+        announcement.textContent = message;
+        document.body.appendChild(announcement);
+        
+        // Remove after announcement
+        setTimeout(() => {
+            if (announcement.parentNode) {
+                announcement.parentNode.removeChild(announcement);
+            }
+        }, 1000);
+    }
+    
+    // Announce form submission status
+    const originalShowNotification = showNotification;
+    showNotification = function(message, type = 'info') {
+        originalShowNotification(message, type);
+        
+        // Announce to screen readers
+        if (type === 'success') {
+            announceToScreenReader('Form submitted successfully');
+        } else if (type === 'error') {
+            announceToScreenReader('Error occurred: ' + message);
+        }
+    };
+    
     // =================================================================
     // LOCAL STORAGE FOR LEAD TRACKING
     // =================================================================
@@ -553,15 +594,31 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Global error handler
     window.addEventListener('error', function(e) {
-        console.error('JavaScript error:', e.error);
+        // Log error for debugging
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.error('JavaScript error:', e.error);
+        }
+        
+        // Track error for analytics
         if (typeof trackEvent !== 'undefined') {
-            trackEvent('Error', 'JavaScript', e.message);
+            trackEvent('Error', 'JavaScript', e.message || 'Unknown error');
+        }
+        
+        // Increment error counter
+        performanceMetrics.errors++;
+        
+        // Show user-friendly error message if critical
+        if (e.error && e.error.message && e.error.message.includes('critical')) {
+            showNotification('Something went wrong. Please refresh the page.', 'error');
         }
     });
     
     // Handle failed form submissions gracefully
     window.addEventListener('unhandledrejection', function(e) {
-        console.error('Unhandled promise rejection:', e.reason);
+        // Log error for debugging
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.error('Unhandled promise rejection:', e.reason);
+        }
         if (typeof trackEvent !== 'undefined') {
             trackEvent('Error', 'Promise Rejection', e.reason);
         }
@@ -569,15 +626,27 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Performance monitoring
     let performanceMetrics = {
-        loadTime: Date.now() - performance.timing.navigationStart,
+        loadTime: Date.now() - (performance.timing?.navigationStart || Date.now()),
         memoryUsage: 0,
-        errors: 0
+        errors: 0,
+        domReadyTime: 0
     };
     
     // Monitor memory usage (if available)
     if ('memory' in performance) {
         setInterval(() => {
-            performanceMetrics.memoryUsage = performance.memory.usedJSHeapSize;
+            try {
+                performanceMetrics.memoryUsage = performance.memory.usedJSHeapSize;
+                
+                // Alert if memory usage is high (>50MB)
+                if (performanceMetrics.memoryUsage > 50 * 1024 * 1024) {
+                    if (typeof trackEvent !== 'undefined') {
+                        trackEvent('Performance', 'Warning', 'High Memory Usage', Math.round(performanceMetrics.memoryUsage / 1024 / 1024));
+                    }
+                }
+            } catch (error) {
+                // Memory monitoring failed, continue silently
+            }
         }, 30000); // Check every 30 seconds
     }
     
@@ -587,6 +656,24 @@ document.addEventListener('DOMContentLoaded', function() {
             trackEvent('Performance', 'Page Load', 'Load Time', performanceMetrics.loadTime);
         }
     }, 5000);
+    
+    // Memory optimization: Clean up unused event listeners
+    function cleanupUnusedListeners() {
+        // Remove event listeners from elements that are no longer in DOM
+        const allElements = document.querySelectorAll('*');
+        const eventListeners = [];
+        
+        // This is a simplified cleanup - in a real implementation, you'd track listeners
+        // For now, we'll just monitor memory usage and suggest cleanup
+        if (performanceMetrics.memoryUsage > 30 * 1024 * 1024) { // 30MB
+            if (typeof trackEvent !== 'undefined') {
+                trackEvent('Performance', 'Memory Warning', 'High Usage', Math.round(performanceMetrics.memoryUsage / 1024 / 1024));
+            }
+        }
+    }
+    
+    // Run cleanup every 2 minutes
+    setInterval(cleanupUnusedListeners, 120000);
     
     // =================================================================
     // TESTIMONIALS SLIDER
@@ -776,7 +863,10 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(showSocialProof, Math.random() * 30000 + 10000); // Between 10-40 seconds
     }
     
-    console.log('🎯 Artificial Grass Oldham website loaded successfully!');
+    // Development logging
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log('🎯 Artificial Grass Oldham website loaded successfully!');
+    }
     
     // =================================================================
     // INLINE EVENT HANDLER CONVERSION
@@ -851,7 +941,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Convert inline handlers after DOM is fully loaded
-    convertInlineHandlers();
+    try {
+        convertInlineHandlers();
+    } catch (error) {
+        // Log error for debugging
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.error('Event handler conversion error:', error);
+        }
+        
+        // Track error for analytics
+        if (typeof trackEvent !== 'undefined') {
+            trackEvent('Error', 'Event Handler Conversion', error.message || 'Unknown error');
+        }
+    }
     
 });
 
