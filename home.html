@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+THIS SHOULD BE A LINTER ERROR<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -46,8 +46,8 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Enhanced Stylesheets -->
+    <link rel="stylesheet" href="css/enhanced-style.css">
     <link rel="stylesheet" href="css/animations.css">
     
     <!-- Favicon -->
@@ -55,10 +55,27 @@
     
     <!-- Google Analytics (replace with your tracking ID) -->
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script> -->
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="js/enhanced-animations.js" as="script">
 </head>
 <body>
     <!-- Skip to content link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Enhanced Background Animation -->
+    <div class="background-animation">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+            <div class="shape shape-6"></div>
+            <div class="shape shape-7"></div>
+        </div>
+        <div class="morphing-blob"></div>
+    </div>
     
     <!-- Header -->
     <header class="header">
@@ -89,10 +106,13 @@
         <div class="hero-background">
             <div class="hero-overlay"></div>
         </div>
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+        </div>
         <div class="container">
             <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="hero-title">
+                <div class="hero-text fade-in-up">
+                    <h1 class="hero-title reveal-text">
                         Transform Your <span class="accent">Oldham Garden</span> 
                         <br>With Premium Artificial Grass
                     </h1>
@@ -100,8 +120,13 @@
                         Serving Oldham, Saddleworth, Uppermill & surrounding areas with expert artificial lawn installation. 
                         <strong>Free quotes, 10-year guarantee, professional installation.</strong>
                     </p>
-                    <div class="hero-buttons">
-                        <button class="btn btn-primary" onclick="openQuoteModal()">Get Free Quote</button>
+                    <div class="hero-buttons stagger-animation">
+                        <button class="btn btn-primary" onclick="openQuoteModal()">
+                            <span>Get Free Quote</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 0L12.245 7.755L20 10L12.245 12.245L10 20L7.755 12.245L0 10L7.755 7.755L10 0Z" fill="currentColor"/>
+                            </svg>
+                        </button>
                         <a href="tel:+441611234567" class="btn btn-secondary">
                             <span>📞</span> Call Now: 0161 123 4567
                         </a>
@@ -121,7 +146,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="hero-form">
+                <div class="hero-form fade-in-up">
                     <div class="form-card">
                         <h3>Get Your Free Quote Today</h3>
                         <p>Transform your garden in Oldham - takes just 30 seconds</p>
@@ -172,12 +197,12 @@
     <!-- Services Section -->
     <section id="services" class="services">
         <div class="container">
-            <div class="section-header">
-                <h2>Artificial Grass Services in Oldham</h2>
+            <div class="section-header fade-in-up">
+                <h2 class="reveal-text">Artificial Grass Services in Oldham</h2>
                 <p>Complete artificial lawn solutions for homes and businesses across Greater Manchester</p>
             </div>
-            <div class="services-grid">
-                <div class="service-card">
+            <div class="services-grid stagger-animation">
+                <div class="service-card fade-in-up">
                     <div class="service-icon">🏡</div>
                     <h3>Residential Installation</h3>
                     <p>Transform your Oldham home with premium artificial grass. Perfect for families with children and pets.</p>
@@ -189,7 +214,7 @@
                     </ul>
                     <button class="btn btn-outline" onclick="openQuoteModal()">Get Quote</button>
                 </div>
-                <div class="service-card">
+                <div class="service-card fade-in-up">
                     <div class="service-icon">🏢</div>
                     <h3>Commercial Projects</h3>
                     <p>Commercial artificial grass installation for businesses, schools, and public spaces in Oldham area.</p>
@@ -201,7 +226,7 @@
                     </ul>
                     <button class="btn btn-outline" onclick="openQuoteModal()">Get Quote</button>
                 </div>
-                <div class="service-card">
+                <div class="service-card fade-in-up">
                     <div class="service-icon">🔄</div>
                     <h3>Grass Replacement</h3>
                     <p>Replace tired natural lawns with beautiful, maintenance-free artificial grass in Saddleworth and beyond.</p>
