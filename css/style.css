@@ -185,6 +185,16 @@ p {
     color: var(--white);
 }
 
+.btn-white {
+    color: var(--white) !important;
+    border-color: var(--white) !important;
+}
+
+.btn-white:hover {
+    background: var(--white);
+    color: var(--primary-black) !important;
+}
+
 .btn-large {
     padding: 20px 40px;
     font-size: 1.1rem;
