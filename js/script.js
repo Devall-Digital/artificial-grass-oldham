@@ -1,6 +1,20 @@
 /**
  * ARTIFICIAL GRASS OLDHAM - MAIN JAVASCRIPT
  * Lead generation and user interaction handling
+ * 
+ * @author Artificial Grass Oldham Development Team
+ * @version 2.0.0
+ * @description Main JavaScript file handling all user interactions, form submissions,
+ *              analytics tracking, and performance optimizations for the artificial
+ *              grass website.
+ * 
+ * Features:
+ * - Navigation and modal functionality
+ * - Lead capture form handling
+ * - Analytics and tracking
+ * - Performance optimizations
+ * - Accessibility enhancements
+ * - Error handling and fallbacks
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -302,6 +316,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // NOTIFICATION SYSTEM
     // =================================================================
     
+    /**
+     * Shows a notification message to the user
+     * @param {string} message - The message to display
+     * @param {string} type - The type of notification ('info', 'success', 'error')
+     */
     function showNotification(message, type = 'info') {
         // Remove existing notifications
         const existing = document.querySelector('.notification');
@@ -346,6 +365,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // ANALYTICS & TRACKING
     // =================================================================
     
+    /**
+     * Tracks user events for analytics
+     * @param {string} category - Event category (e.g., 'Lead', 'Contact', 'Page')
+     * @param {string} action - Event action (e.g., 'Submit', 'Click', 'View')
+     * @param {string} label - Event label for additional context
+     * @param {number} value - Numeric value associated with the event
+     */
     function trackEvent(category, action, label, value) {
         // Google Analytics 4 (gtag)
         if (typeof gtag !== 'undefined') {
@@ -528,14 +554,39 @@ document.addEventListener('DOMContentLoaded', function() {
     // Global error handler
     window.addEventListener('error', function(e) {
         console.error('JavaScript error:', e.error);
-        trackEvent('Error', 'JavaScript', e.message);
+        if (typeof trackEvent !== 'undefined') {
+            trackEvent('Error', 'JavaScript', e.message);
+        }
     });
     
     // Handle failed form submissions gracefully
     window.addEventListener('unhandledrejection', function(e) {
         console.error('Unhandled promise rejection:', e.reason);
-        trackEvent('Error', 'Promise Rejection', e.reason);
+        if (typeof trackEvent !== 'undefined') {
+            trackEvent('Error', 'Promise Rejection', e.reason);
+        }
     });
+    
+    // Performance monitoring
+    let performanceMetrics = {
+        loadTime: Date.now() - performance.timing.navigationStart,
+        memoryUsage: 0,
+        errors: 0
+    };
+    
+    // Monitor memory usage (if available)
+    if ('memory' in performance) {
+        setInterval(() => {
+            performanceMetrics.memoryUsage = performance.memory.usedJSHeapSize;
+        }, 30000); // Check every 30 seconds
+    }
+    
+    // Report performance metrics
+    setTimeout(() => {
+        if (typeof trackEvent !== 'undefined') {
+            trackEvent('Performance', 'Page Load', 'Load Time', performanceMetrics.loadTime);
+        }
+    }, 5000);
     
     // =================================================================
     // TESTIMONIALS SLIDER
@@ -726,10 +777,86 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     console.log('🎯 Artificial Grass Oldham website loaded successfully!');
+    
+    // =================================================================
+    // INLINE EVENT HANDLER CONVERSION
+    // =================================================================
+    
+    // Convert all inline onclick handlers to event listeners
+    function convertInlineHandlers() {
+        // Quote modal buttons
+        const quoteButtons = document.querySelectorAll('button[onclick*="openQuoteModal"]');
+        quoteButtons.forEach(button => {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                openQuoteModal();
+            });
+        });
+        
+        // Close quote modal buttons
+        const closeQuoteButtons = document.querySelectorAll('[onclick*="closeQuoteModal"]');
+        closeQuoteButtons.forEach(button => {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeQuoteModal();
+            });
+        });
+        
+        // Close success modal buttons
+        const closeSuccessButtons = document.querySelectorAll('[onclick*="closeSuccessModal"]');
+        closeSuccessButtons.forEach(button => {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeSuccessModal();
+            });
+        });
+        
+        // Testimonial navigation buttons
+        const testimonialButtons = document.querySelectorAll('[onclick*="moveTestimonial"]');
+        testimonialButtons.forEach(button => {
+            const onclick = button.getAttribute('onclick');
+            const direction = onclick.includes('moveTestimonial(-1)') ? -1 : 1;
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                moveTestimonial(direction);
+            });
+        });
+        
+        // FAQ toggle buttons
+        const faqButtons = document.querySelectorAll('[onclick*="toggleFaq"]');
+        faqButtons.forEach(button => {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleFaq(this);
+            });
+        });
+        
+        // Notification close buttons
+        const notificationCloseButtons = document.querySelectorAll('[onclick*="this.parentElement.parentElement.remove()"]');
+        notificationCloseButtons.forEach(button => {
+            button.removeAttribute('onclick');
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const notification = this.closest('.notification');
+                if (notification) {
+                    notification.remove();
+                }
+            });
+        });
+    }
+    
+    // Convert inline handlers after DOM is fully loaded
+    convertInlineHandlers();
+    
 });
 
 // =================================================================
-// FAQ FUNCTIONALITY
+// GLOBAL FUNCTIONS (for HTML onclick handlers)
 // =================================================================
 
 // FAQ toggle function (called from HTML)
@@ -748,7 +875,9 @@ window.toggleFaq = function(button) {
     }
     
     // Track FAQ interaction
-    trackEvent('FAQ', 'Toggle', button.querySelector('span').textContent);
+    if (typeof trackEvent !== 'undefined') {
+        trackEvent('FAQ', 'Toggle', button.querySelector('span').textContent);
+    }
 };
 
 // Testimonials carousel function (called from HTML)
@@ -766,7 +895,9 @@ window.moveTestimonial = function(direction) {
     track.style.transform = `translateX(${clampedPosition}%)`;
     
     // Track testimonial navigation
-    trackEvent('Testimonials', 'Navigate', direction > 0 ? 'Next' : 'Previous');
+    if (typeof trackEvent !== 'undefined') {
+        trackEvent('Testimonials', 'Navigate', direction > 0 ? 'Next' : 'Previous');
+    }
 };
 
 // =================================================================
