@@ -81,10 +81,10 @@ fclose($file);
 
 // Send email notification (configure these settings)
 $send_email = true; // Set to true when ready for production
-$your_email = 'info@artificialgrassoldham.co.uk'; // Replace with your email
-$partner_email = 'leads@unreallawns.co.uk'; // Replace with partner's email
+$your_email = 'info@artificialgrassoldham.co.uk'; // Your email address
+$partner_email = 'leads@unreallawns.co.uk'; // Partner's email address
 
-if ($send_email && $your_email !== 'info@artificialgrassoldham.co.uk') {
+if ($send_email) {
     // Email to yourself
     $subject = 'New Artificial Grass Lead - ' . $lead_data['name'];
     $message = "New lead received:\n\n";
@@ -99,7 +99,7 @@ if ($send_email && $your_email !== 'info@artificialgrassoldham.co.uk') {
     mail($your_email, $subject, $message, $headers);
     
     // Email to partner (if configured)
-    if ($partner_email !== 'partner@unreallawns.co.uk') {
+    if ($partner_email) {
         $partner_subject = 'New Lead: Artificial Grass Installation';
         $partner_message = "You have received a new lead:\n\n";
         $partner_message .= "Name: " . $lead_data['name'] . "\n";

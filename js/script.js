@@ -234,10 +234,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     closeSuccessModal();
                 }, 5000);
                 
-                // Optional: Redirect to thank you page after delay
-                // setTimeout(() => {
-                //     window.location.href = '/thank-you.html';
-                // }, 3000);
+                // Redirect to thank you page after delay
+                setTimeout(() => {
+                    window.location.href = '/thank-you.html';
+                }, 3000);
                 
             } catch (error) {
                 // Log error for debugging
