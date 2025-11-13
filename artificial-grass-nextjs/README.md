@@ -1,10 +1,11 @@
 # Artificial Grass Oldham - Next.js Website
 
-A modern, high-performance website for Artificial Grass Oldham built with Next.js 15, React, TypeScript, and Tailwind CSS.
+A modern, high-performance website for Artificial Grass Oldham built with Next.js 15, React 19, TypeScript, and Tailwind CSS.
 
 ## 🚀 Features
 
-- **Modern Tech Stack**: Next.js 15, React 18, TypeScript, Tailwind CSS
+- **Modern Tech Stack**: Next.js 15, React 19, TypeScript, Tailwind CSS
+- **Code Quality**: ESLint + Prettier + Husky for enforced code standards
 - **Performance Optimized**: Static generation, image optimization, code splitting
 - **SEO Ready**: Meta tags, structured data, sitemap generation
 - **Lead Generation**: Built-in contact forms with API routes
@@ -19,23 +20,17 @@ A modern, high-performance website for Artificial Grass Oldham built with Next.j
 
 ## 🛠️ Installation
 
-1. Clone the repository:
-```bash
-git clone [your-repo-url]
-cd artificial-grass-nextjs
-```
-
-2. Install dependencies:
+1. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Copy the environment example file:
+2. Copy the environment example file (if it exists):
 ```bash
 cp .env.example .env.local
 ```
 
-4. Update the `.env.local` file with your configuration:
+3. Update the `.env.local` file with your configuration:
 ```env
 NEXT_PUBLIC_GA_ID=your-google-analytics-id
 API_SECRET_KEY=your-secret-key
@@ -50,6 +45,25 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the website.
+
+## 📝 Code Quality
+
+This project uses strict code quality tools to ensure consistency:
+
+### ESLint
+- Run linting: `npm run lint`
+- Auto-fix issues: `npm run lint:fix`
+
+### Prettier
+- Format code: `npm run format`
+- Check formatting: `npm run format:check`
+
+### TypeScript
+- Type checking: `npm run type-check`
+
+### Husky Pre-commit Hooks
+- Automatically runs lint-staged and type-checking before commits
+- Prevents committing code that doesn't meet quality standards
 
 ## 🏗️ Building for Production
 
@@ -71,20 +85,22 @@ npm run start
 artificial-grass-nextjs/
 ├── app/                    # Next.js app directory
 │   ├── api/               # API routes
-│   │   └── leads/         # Lead capture endpoint
 │   ├── layout.tsx         # Root layout
 │   ├── page.tsx           # Home page
-│   └── globals.css        # Global styles
+│   └── globals.css         # Global styles
 ├── components/            # React components
 │   ├── home/             # Home page components
 │   ├── Header.tsx        # Site header
 │   ├── Footer.tsx        # Site footer
 │   └── QuoteModal.tsx    # Quote request modal
 ├── hooks/                # Custom React hooks
-├── utils/                # Utility functions
+├── lib/                  # Utility functions
+├── types/                # TypeScript types
 ├── public/               # Static assets
-│   └── images/          # Image files
-└── lib/                  # Library code
+├── .eslintrc.json       # ESLint configuration
+├── .prettierrc          # Prettier configuration
+├── .husky/              # Git hooks
+└── tailwind.config.ts   # Tailwind configuration
 ```
 
 ## 🎨 Customization
@@ -115,9 +131,7 @@ const inter = Inter({
 
 ## 📧 Lead Capture
 
-Leads are captured via the `/api/leads` endpoint and stored in CSV format in the `data/` directory.
-
-To enable email notifications:
+Leads are captured via the `/api/leads` endpoint. To enable email notifications:
 1. Set up an email service (SendGrid, Mailgun, etc.)
 2. Add the configuration to your `.env.local`
 3. Update the API route to send emails
@@ -134,18 +148,6 @@ To enable email notifications:
 ### Other Platforms
 
 The project is configured with `output: 'standalone'` for compatibility with various hosting platforms.
-
-For Docker deployment:
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
 
 ## 🔧 Configuration
 
@@ -191,7 +193,7 @@ npm run lint
 
 Type checking:
 ```bash
-npx tsc --noEmit
+npm run type-check
 ```
 
 ## 📈 Performance
@@ -204,11 +206,12 @@ The site achieves excellent Lighthouse scores:
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Create your feature branch (`git checkout -b feature/amazing-feature`)
+2. Make your changes
+3. Run `npm run lint` and `npm run type-check` to ensure code quality
+4. Commit your changes (Husky will run pre-commit checks)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
 
 ## 📄 License
 
@@ -220,4 +223,4 @@ For support, email info@artificialgrassoldham.co.uk or open an issue.
 
 ---
 
-Built with ❤️ using Next.js and Tailwind CSS
+**Built with ❤️ using Next.js, React, TypeScript, and Tailwind CSS**
