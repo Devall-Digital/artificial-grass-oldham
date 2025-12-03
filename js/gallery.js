@@ -180,8 +180,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const additionalItems = [
             {
                 categories: ['residential', 'oldham'],
-                beforeImage: 'https://images.unsplash.com/photo-1585057133717-f82d8c4b4cd1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                afterImage: 'https://images.unsplash.com/photo-1572715376394-ec0b0128e52c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                beforeImage: 'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                afterImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                 title: 'Modern Family Home - Oldham',
                 description: 'Contemporary artificial grass installation with clean lines and integrated outdoor lighting.',
                 location: 'Oldham Heights',
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             {
                 categories: ['commercial', 'saddleworth'],
-                image: 'https://images.unsplash.com/photo-1600053294908-473c7ac76d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                 title: 'School Playground - Saddleworth',
                 description: 'Safe, durable artificial grass installation for primary school playground area.',
                 location: 'Saddleworth Primary',
@@ -199,8 +199,8 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             {
                 categories: ['residential', 'before-after', 'saddleworth'],
-                beforeImage: 'https://images.unsplash.com/photo-1560750285-cb5e5a7239be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                afterImage: 'https://images.unsplash.com/photo-1553582993-1e4c2b5cc42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                beforeImage: 'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                afterImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
                 title: 'Luxury Villa Transformation - Saddleworth',
                 description: 'Premium artificial grass installation for high-end property with stunning results.',
                 location: 'Saddleworth Moor',
