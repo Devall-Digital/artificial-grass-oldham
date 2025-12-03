@@ -426,7 +426,8 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--gradient-light);
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.9) 0%, rgba(0, 255, 136, 0.7) 100%),
+                url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
     z-index: -2;
 }
 
