@@ -177,30 +177,73 @@ document.addEventListener('DOMContentLoaded', function() {
                 data.referrer = document.referrer;
                 data.timestamp = new Date().toISOString();
                 
+                // Clear previous errors
+                form.querySelectorAll('.error-message').forEach(msg => {
+                    msg.textContent = '';
+                    msg.parentElement.classList.remove('error');
+                });
+                
+                let hasErrors = false;
+                
                 // Validate required fields
                 const requiredFields = ['name', 'phone', 'email', 'postcode'];
-                const missingFields = requiredFields.filter(field => !data[field] || data[field].trim() === '');
-                
-                if (missingFields.length > 0) {
-                    throw new Error(`Please fill in all required fields: ${missingFields.join(', ')}`);
-                }
+                requiredFields.forEach(field => {
+                    const input = form.querySelector(`[name="${field}"]`);
+                    const errorMsg = input?.parentElement.querySelector('.error-message');
+                    
+                    if (!data[field] || data[field].trim() === '') {
+                        if (errorMsg) {
+                            errorMsg.textContent = 'This field is required';
+                            input.parentElement.classList.add('error');
+                        }
+                        hasErrors = true;
+                    }
+                });
                 
                 // Validate email format
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(data.email)) {
-                    throw new Error('Please enter a valid email address');
+                if (data.email && !emailRegex.test(data.email)) {
+                    const emailInput = form.querySelector('[name="email"]');
+                    const errorMsg = emailInput?.parentElement.querySelector('.error-message');
+                    if (errorMsg) {
+                        errorMsg.textContent = 'Please enter a valid email address';
+                        emailInput.parentElement.classList.add('error');
+                    }
+                    hasErrors = true;
                 }
                 
                 // Validate UK postcode format
                 const postcodeRegex = /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/i;
-                if (!postcodeRegex.test(data.postcode.replace(/\s/g, ''))) {
-                    throw new Error('Please enter a valid UK postcode');
+                if (data.postcode && !postcodeRegex.test(data.postcode.replace(/\s/g, ''))) {
+                    const postcodeInput = form.querySelector('[name="postcode"]');
+                    const errorMsg = postcodeInput?.parentElement.querySelector('.error-message');
+                    if (errorMsg) {
+                        errorMsg.textContent = 'Please enter a valid UK postcode (e.g. OL1 1XX)';
+                        postcodeInput.parentElement.classList.add('error');
+                    }
+                    hasErrors = true;
                 }
                 
                 // Validate phone number (basic UK format)
                 const phoneRegex = /^(\+44|0)[0-9\s\-]{9,}$/;
-                if (!phoneRegex.test(data.phone.replace(/\s/g, ''))) {
-                    throw new Error('Please enter a valid UK phone number');
+                if (data.phone && !phoneRegex.test(data.phone.replace(/\s/g, ''))) {
+                    const phoneInput = form.querySelector('[name="phone"]');
+                    const errorMsg = phoneInput?.parentElement.querySelector('.error-message');
+                    if (errorMsg) {
+                        errorMsg.textContent = 'Please enter a valid UK phone number';
+                        phoneInput.parentElement.classList.add('error');
+                    }
+                    hasErrors = true;
+                }
+                
+                if (hasErrors) {
+                    // Focus on first error field
+                    const firstError = form.querySelector('.error input, .error select');
+                    if (firstError) {
+                        firstError.focus();
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    throw new Error('Please correct the errors in the form');
                 }
                 
                 // Submit to backend
@@ -245,8 +288,10 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Form submission error:', error);
         }
                 
-                // Show error message
-                showNotification(error.message, 'error');
+                // Show error notification (keep for general errors)
+                if (!hasErrors) {
+                    showNotification(error.message, 'error');
+                }
                 
                 // Track form errors
                 trackEvent('Lead', 'Error', error.message);
@@ -787,6 +832,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const formInputs = document.querySelectorAll('.form-group input, .form-group select');
     
     formInputs.forEach(input => {
+        // Clear errors on input
+        input.addEventListener('input', function() {
+            const formGroup = this.parentElement;
+            const errorMsg = formGroup.querySelector('.error-message');
+            if (errorMsg && errorMsg.textContent) {
+                errorMsg.textContent = '';
+                formGroup.classList.remove('error');
+            }
+        });
+        
         // Add focus/blur effects
         input.addEventListener('focus', function() {
             this.parentElement.classList.add('focused');
