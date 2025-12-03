@@ -5,4 +5,4 @@ Disallow: /leads/
 Disallow: /process-lead.php
 
 # Sitemap location
-Sitemap: https://artificialgrassoldham.co.uk/sitemap.xml
+Sitemap: https://artificial-grass-oldham.co.uk/sitemap.xml

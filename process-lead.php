@@ -40,8 +40,7 @@ $lead_data = [
     'postcode' => filter_var($input['postcode'], FILTER_SANITIZE_STRING),
     'garden_size' => filter_var($input['garden-size'] ?? 'Not specified', FILTER_SANITIZE_STRING),
     'timeframe' => filter_var($input['timeframe'] ?? 'Not specified', FILTER_SANITIZE_STRING),
-    'source' => 'artificial-grass-manchester',
-    'partner' => 'unreal-lawns',
+    'source' => 'artificial-grass-oldham',
     'ip_address' => $_SERVER['REMOTE_ADDR'] ?? 'Unknown'
 ];
 
@@ -79,13 +78,12 @@ if ($write_headers) {
 fputcsv($file, array_values($lead_data));
 fclose($file);
 
-// Send email notification (configure these settings)
+// Send email notification
 $send_email = true; // Set to true when ready for production
-$your_email = 'info@artificialgrassoldham.co.uk'; // Replace with your email
-$partner_email = 'leads@unreallawns.co.uk'; // Replace with partner's email
+$your_email = 'info@artificialgrassoldham.co.uk'; // Your email address
 
-if ($send_email && $your_email !== 'info@artificialgrassoldham.co.uk') {
-    // Email to yourself
+if ($send_email) {
+    // Email notification
     $subject = 'New Artificial Grass Lead - ' . $lead_data['name'];
     $message = "New lead received:\n\n";
     foreach ($lead_data as $key => $value) {
@@ -97,21 +95,6 @@ if ($send_email && $your_email !== 'info@artificialgrassoldham.co.uk') {
                'X-Mailer: PHP/' . phpversion();
     
     mail($your_email, $subject, $message, $headers);
-    
-    // Email to partner (if configured)
-    if ($partner_email !== 'partner@unreallawns.co.uk') {
-        $partner_subject = 'New Lead: Artificial Grass Installation';
-        $partner_message = "You have received a new lead:\n\n";
-        $partner_message .= "Name: " . $lead_data['name'] . "\n";
-        $partner_message .= "Phone: " . $lead_data['phone'] . "\n";
-        $partner_message .= "Email: " . $lead_data['email'] . "\n";
-        $partner_message .= "Postcode: " . $lead_data['postcode'] . "\n";
-        $partner_message .= "Garden Size: " . $lead_data['garden_size'] . "\n";
-        $partner_message .= "Timeframe: " . $lead_data['timeframe'] . "\n";
-        $partner_message .= "\nPlease contact them as soon as possible.";
-        
-        mail($partner_email, $partner_subject, $partner_message, $headers);
-    }
 }
 
 // Return success response
