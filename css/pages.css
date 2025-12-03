@@ -374,7 +374,11 @@
 }
 
 .pricing-features li::before {
-    content: '✓ ';
+    content: '';
+    width: 18px;
+    height: 18px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300ff88' stroke-width='2.5'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
     color: var(--accent-green);
     margin-right: 0.5rem;
 }
