@@ -6,6 +6,41 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     // =================================================================
+    // PARTICLE SYSTEM
+    // =================================================================
+    
+    function initializeParticles() {
+        const particlesContainer = document.getElementById('particles');
+        if (!particlesContainer) return;
+        
+        const particleCount = 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Random size between 2-6px
+            const size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            // Random starting position
+            particle.style.left = Math.random() * 100 + '%';
+            
+            // Random animation duration (15-25s)
+            const duration = Math.random() * 10 + 15;
+            particle.style.animationDuration = duration + 's';
+            
+            // Random delay
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+    
+    initializeParticles();
+    
+    // =================================================================
     // CUSTOM CURSOR
     // =================================================================
     
