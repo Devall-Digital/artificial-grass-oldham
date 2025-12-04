@@ -52,6 +52,54 @@ body {
     .container {
         padding: 0 15px;
     }
+    
+    .nav-content {
+        padding: 0 15px;
+    }
+    
+    .logo {
+        font-size: 1.25rem;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .hero {
+        padding: 90px 15px 30px;
+    }
+    
+    .hero-title {
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+        margin-bottom: 1.5rem;
+    }
+    
+    .benefit-card h3,
+    .service-card h3 {
+        font-size: 1.25rem;
+    }
+    
+    .area-card h3 {
+        font-size: 1.25rem;
+    }
+    
+    .testimonials-slider {
+        margin-top: 2rem;
+    }
+    
+    .faq-question {
+        padding: 1.25rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .faq-answer p {
+        padding: 0 1rem 1.25rem;
+        font-size: 0.95rem;
+    }
 }
 
 /* Animated Background */
@@ -401,7 +449,7 @@ body {
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2rem, 5vw, 4rem);
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 1.5rem;
@@ -429,11 +477,12 @@ body {
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
     color: var(--text-secondary);
     margin-bottom: 2rem;
     opacity: 0;
     animation: fadeInUp 1s ease forwards 0.6s;
+    line-height: 1.6;
 }
 
 .hero-buttons {
@@ -547,11 +596,17 @@ body {
         flex-direction: column;
         text-align: center;
         padding: 100px 20px 40px;
+        min-height: auto;
+    }
+    
+    .hero-content {
+        max-width: 100%;
     }
     
     .hero-visual {
         height: 300px;
         margin-top: 2rem;
+        width: 100%;
     }
     
     .grass-field {
@@ -567,6 +622,15 @@ body {
     .grass-blade.layer-3 { height: 120px; }
     .grass-blade.layer-4 { height: 140px; }
     .grass-blade.layer-5 { height: 160px; }
+    
+    .benefits-grid,
+    .services-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
 }
 
 /* Quote Form Section */
@@ -596,7 +660,7 @@ body {
 }
 
 .quote-form-header h2 {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     margin-bottom: 0.5rem;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
@@ -717,8 +781,123 @@ select.form-input {
         padding: 2rem 1.5rem;
     }
     
+    .quote-form-header h2 {
+        font-size: 1.75rem;
+    }
+    
     .form-row {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .hero-cta {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .hero-features {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+    }
+    
+    .feature-badge {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .benefits,
+    .services,
+    .gallery,
+    .testimonials,
+    .areas,
+    .faq,
+    .cta-section,
+    .quote-section {
+        padding: 60px 0;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .benefits-grid,
+    .services-grid {
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .benefit-card,
+    .service-card {
+        padding: 1.5rem;
+    }
+    
+    .cta-content {
+        padding: 2.5rem 1.5rem;
+    }
+    
+    .cta-content h2 {
+        font-size: 1.75rem;
+    }
+    
+    .cta-content p {
+        font-size: 1rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-large {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .cta-features {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .testimonial-content {
+        padding: 2rem 1.5rem;
+    }
+    
+    .testimonial-content p {
+        font-size: 1rem;
+    }
+    
+    .gallery-grid {
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .areas-grid {
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .footer-content {
+        gap: 1.5rem;
     }
 }
 
@@ -746,13 +925,15 @@ select.form-input {
 .section-subtitle {
     text-align: center;
     color: var(--text-secondary);
-    font-size: 1.1rem;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
     margin-bottom: 3rem;
+    line-height: 1.6;
+    padding: 0 1rem;
 }
 
 .benefits-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
     margin-top: 3rem;
 }
@@ -806,6 +987,7 @@ select.form-input {
 .benefit-card p {
     color: var(--text-secondary);
     line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 /* Services Section */
@@ -821,7 +1003,7 @@ select.form-input {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
     margin-top: 3rem;
 }
@@ -858,6 +1040,7 @@ select.form-input {
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
     line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 .service-card ul {
@@ -932,7 +1115,7 @@ select.form-input {
 
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
     margin-top: 3rem;
 }
@@ -1131,6 +1314,8 @@ select.form-input {
 
 .area-card p {
     color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
 /* FAQ Section */
@@ -1227,7 +1412,7 @@ select.form-input {
 }
 
 .cta-content h2 {
-    font-size: 2.5rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
     margin-bottom: 1rem;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
@@ -1236,9 +1421,10 @@ select.form-input {
 }
 
 .cta-content p {
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
     color: var(--text-secondary);
     margin-bottom: 2rem;
+    line-height: 1.6;
 }
 
 .cta-buttons {
@@ -1372,12 +1558,16 @@ select.form-input {
 }
 
 /* Responsive Design */
-@media (max-width: 968px) {
+@media (max-width: 768px) {
     .benefits-grid,
     .services-grid,
     .gallery-grid,
     .areas-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .quote-section {
+        padding: 60px 0;
     }
 }
 
