@@ -1,157 +1,90 @@
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', function() {
-    initializeParticles();
+    initializeGrassField();
     initializeMobileMenu();
     initializeForm();
     initializeTestimonials();
     initializeScrollAnimations();
     initializeStickyCTA();
-    initializeShapeInteractions();
     initializeSmoothScroll();
-    initializeGrassAnimations();
 });
 
-// Initialize Grass Animations
-function initializeGrassAnimations() {
-    // Add subtle grass wave effect on scroll
-    let lastScrollTop = 0;
-    const grassRoll = document.querySelector('.grass-roll');
-    const grassGrowing = document.querySelector('.grass-growing-bg');
+// Initialize Grass Field - Low Angle View
+function initializeGrassField() {
+    const grassField = document.getElementById('grassField');
+    if (!grassField) return;
     
-    if (!grassRoll || !grassGrowing) return;
+    // Create multiple layers of grass blades for depth
+    const bladeCount = 150; // More blades for realistic field
+    const layers = ['layer-1', 'layer-2', 'layer-3', 'layer-4', 'layer-5'];
     
-    // Throttle scroll events for performance
-    let scrollTimeout;
-    window.addEventListener('scroll', () => {
-        if (scrollTimeout) {
-            cancelAnimationFrame(scrollTimeout);
+    for (let i = 0; i < bladeCount; i++) {
+        const blade = document.createElement('div');
+        blade.classList.add('grass-blade');
+        
+        // Assign random layer for depth
+        const layerIndex = Math.floor(Math.random() * layers.length);
+        blade.classList.add(layers[layerIndex]);
+        
+        // Random horizontal position
+        blade.style.left = Math.random() * 100 + '%';
+        
+        // Random width for variety (2-4px)
+        blade.style.width = (Math.random() * 2 + 2) + 'px';
+        
+        // Vary height slightly within layer
+        const baseHeight = [150, 180, 200, 220, 250][layerIndex];
+        const heightVariation = (Math.random() - 0.5) * 30;
+        blade.style.height = (baseHeight + heightVariation) + 'px';
+        
+        // Random initial rotation for natural look
+        const initialRotation = (Math.random() - 0.5) * 10;
+        blade.style.transform = `rotate(${initialRotation}deg)`;
+        
+        // Random animation delay for natural wave effect
+        const delay = Math.random() * 2;
+        blade.style.animationDelay = delay + 's';
+        
+        // Some blades get stronger gusts
+        if (Math.random() < 0.2) {
+            blade.classList.add(Math.random() < 0.5 ? 'gust-1' : 'gust-2');
         }
         
-        scrollTimeout = requestAnimationFrame(() => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollDelta = scrollTop - lastScrollTop;
-            
-            // Subtle parallax effect for grass elements
-            if (scrollDelta > 0) {
-                // Scrolling down - grass moves slightly
-                const parallaxY = Math.min(scrollTop * 0.05, 15);
-                grassRoll.style.transform = `translateY(${parallaxY}px)`;
-                
-                // Add subtle opacity change
-                const opacity = Math.min(0.3 + (scrollTop * 0.0001), 0.5);
-                grassGrowing.style.opacity = opacity;
-            }
-            
-            lastScrollTop = scrollTop;
-        });
+        // Add slight color variation
+        const colorVariation = Math.random();
+        if (colorVariation > 0.7) {
+            // Slightly darker green
+            blade.style.background = `linear-gradient(to top,
+                rgba(5, 150, 105, 0.9) 0%,
+                rgba(5, 150, 105, 0.7) 30%,
+                rgba(16, 185, 129, 0.5) 60%,
+                rgba(16, 185, 129, 0.3) 100%
+            )`;
+        } else if (colorVariation < 0.3) {
+            // Slightly lighter green
+            blade.style.background = `linear-gradient(to top,
+                rgba(16, 185, 129, 0.9) 0%,
+                rgba(16, 185, 129, 0.7) 30%,
+                rgba(52, 211, 153, 0.5) 60%,
+                rgba(74, 222, 128, 0.3) 100%
+            )`;
+        }
+        
+        grassField.appendChild(blade);
+    }
+    
+    // Add perspective effect on scroll
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollDelta = scrollTop - lastScrollTop;
+        
+        // Subtle parallax - grass appears to move as you scroll
+        const parallax = Math.min(scrollTop * 0.1, 50);
+        grassField.style.transform = `translateY(${parallax}px)`;
+        
+        lastScrollTop = scrollTop;
     }, { passive: true });
-    
-    // Add wind effect on mouse move (desktop only)
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        let mouseTimeout;
-        document.addEventListener('mousemove', (e) => {
-            if (mouseTimeout) {
-                cancelAnimationFrame(mouseTimeout);
-            }
-            
-            mouseTimeout = requestAnimationFrame(() => {
-                const mouseX = e.clientX / window.innerWidth;
-                
-                // Subtle grass sway based on mouse position
-                const swayX = (mouseX - 0.5) * 3; // -1.5 to 1.5 pixels
-                const currentTransform = grassRoll.style.transform || '';
-                const currentY = currentTransform.match(/translateY\(([^)]+)\)/) ? 
-                    currentTransform.match(/translateY\(([^)]+)\)/)[1] : '0px';
-                grassRoll.style.transform = `translateX(${swayX}px) translateY(${currentY})`;
-            });
-        }, { passive: true });
-    }
-    
-    // Add periodic grass "growth" pulse effect
-    setInterval(() => {
-        if (grassGrowing) {
-            grassGrowing.style.animation = 'none';
-            setTimeout(() => {
-                grassGrowing.style.animation = 'grassGrow 2s ease-out';
-            }, 10);
-        }
-    }, 10000); // Every 10 seconds
-}
-
-// Initialize Particle System
-function initializeParticles() {
-    const particlesContainer = document.getElementById('particles');
-    if (!particlesContainer) return;
-    
-    const particleCount = 50;
-    
-    for (let i = 0; i < particleCount; i++) {
-        createParticle(particlesContainer);
-    }
-    
-    // Add new particles periodically
-    setInterval(() => {
-        if (particlesContainer.children.length < particleCount) {
-            createParticle(particlesContainer);
-        }
-    }, 2000);
-}
-
-function createParticle(container) {
-    const particle = document.createElement('div');
-    
-    // 30% chance to create a grass blade particle instead of circle
-    const isGrassBlade = Math.random() < 0.3;
-    
-    if (isGrassBlade) {
-        particle.classList.add('particle', 'grass-blade');
-        // Random rotation for grass blade
-        const rotation = (Math.random() - 0.5) * 20; // -10 to 10 degrees
-        particle.style.transform = `rotate(${rotation}deg)`;
-    } else {
-        particle.classList.add('particle');
-        // Random size between 2px and 8px
-        const size = Math.random() * 6 + 2;
-        particle.style.width = size + 'px';
-        particle.style.height = size + 'px';
-    }
-    
-    // Random starting position
-    particle.style.left = Math.random() * 100 + '%';
-    
-    // Random animation duration
-    const duration = Math.random() * 10 + 15; // 15-25 seconds
-    particle.style.animationDuration = duration + 's';
-    
-    // Random delay
-    particle.style.animationDelay = Math.random() * 5 + 's';
-    
-    // Random color variation - green/cyan themed
-    const colorVariation = Math.random();
-    if (!isGrassBlade) {
-        if (colorVariation > 0.66) {
-            // Cyan particles
-            particle.style.background = 'radial-gradient(circle, rgba(6, 182, 212, 0.8) 0%, rgba(6, 182, 212, 0.4) 30%, transparent 70%)';
-            particle.style.boxShadow = '0 0 10px rgba(6, 182, 212, 0.5)';
-        } else if (colorVariation > 0.33) {
-            // Green particles
-            particle.style.background = 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 30%, transparent 70%)';
-            particle.style.boxShadow = '0 0 10px rgba(16, 185, 129, 0.5)';
-        } else {
-            // Light green particles
-            particle.style.background = 'radial-gradient(circle, rgba(52, 211, 153, 0.6) 0%, rgba(52, 211, 153, 0.3) 40%, transparent 70%)';
-            particle.style.boxShadow = '0 0 8px rgba(52, 211, 153, 0.4)';
-        }
-    }
-    
-    container.appendChild(particle);
-    
-    // Remove particle after animation completes
-    setTimeout(() => {
-        if (particle.parentNode) {
-            particle.remove();
-        }
-    }, duration * 1000);
 }
 
 // Initialize Mobile Menu
@@ -339,89 +272,6 @@ function initializeStickyCTA() {
     }, { passive: true });
 }
 
-// Initialize Shape Interactions
-function initializeShapeInteractions() {
-    const shapes = document.querySelectorAll('.shape');
-    if (shapes.length === 0) return;
-    
-    // Physics-based movement for shapes
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    
-    const shapePhysics = Array.from(shapes).map((shape, index) => {
-        const rect = shape.getBoundingClientRect();
-        const width = rect.width || 20;
-        const height = rect.height || 60;
-        
-        // Random starting position
-        const isMobile = viewportWidth < 768;
-        const padding = isMobile ? 60 : 100;
-        const startX = padding + Math.random() * (viewportWidth - padding * 2);
-        const startY = padding + Math.random() * (viewportHeight - padding * 2);
-        
-        return {
-            element: shape,
-            x: startX,
-            y: startY,
-            vx: (Math.random() - 0.5) * 0.3,
-            vy: (Math.random() - 0.5) * 0.3,
-            width: width,
-            height: height
-        };
-    });
-    
-    // Physics animation loop
-    function animateShapes() {
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-        const isMobile = viewportWidth < 768;
-        const padding = isMobile ? 30 : 50;
-        
-        shapePhysics.forEach(physics => {
-            // Update position
-            physics.x += physics.vx;
-            physics.y += physics.vy;
-            
-            // Bounce off edges
-            if (physics.x - physics.width / 2 < padding || physics.x + physics.width / 2 > viewportWidth - padding) {
-                physics.vx *= -1;
-                physics.x = Math.max(padding + physics.width / 2, Math.min(viewportWidth - padding - physics.width / 2, physics.x));
-            }
-            
-            if (physics.y - physics.height / 2 < padding || physics.y + physics.height / 2 > viewportHeight - padding) {
-                physics.vy *= -1;
-                physics.y = Math.max(padding + physics.height / 2, Math.min(viewportHeight - padding - physics.height / 2, physics.y));
-            }
-            
-            // Update CSS position
-            physics.element.style.left = `${physics.x - physics.width / 2}px`;
-            physics.element.style.top = `${physics.y - physics.height / 2}px`;
-        });
-        
-        requestAnimationFrame(animateShapes);
-    }
-    
-    // Start physics animation
-    animateShapes();
-    
-    // Handle window resize
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            const newWidth = window.innerWidth;
-            const newHeight = window.innerHeight;
-            
-            const isMobile = newWidth < 768;
-            const padding = isMobile ? 30 : 50;
-            
-            shapePhysics.forEach(physics => {
-                physics.x = Math.max(physics.width / 2 + padding, Math.min(newWidth - physics.width / 2 - padding, physics.x));
-                physics.y = Math.max(physics.height / 2 + padding, Math.min(newHeight - physics.height / 2 - padding, physics.y));
-            });
-        }, 250);
-    });
-}
 
 // Initialize Smooth Scroll
 function initializeSmoothScroll() {
