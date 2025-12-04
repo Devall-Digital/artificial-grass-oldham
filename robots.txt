@@ -1,8 +1,11 @@
-# Robots.txt for Artificial Grass Manchester
+# Robots.txt for Artificial Grass Oldham
 User-agent: *
 Allow: /
 Disallow: /leads/
 Disallow: /process-lead.php
+Disallow: /webhook-deploy.php
+Disallow: /webhook-config.php
 
 # Sitemap location
 Sitemap: https://artificial-grass-oldham.co.uk/sitemap.xml
+
