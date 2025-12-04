@@ -8,7 +8,75 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeStickyCTA();
     initializeShapeInteractions();
     initializeSmoothScroll();
+    initializeGrassAnimations();
 });
+
+// Initialize Grass Animations
+function initializeGrassAnimations() {
+    // Add subtle grass wave effect on scroll
+    let lastScrollTop = 0;
+    const grassRoll = document.querySelector('.grass-roll');
+    const grassGrowing = document.querySelector('.grass-growing-bg');
+    
+    if (!grassRoll || !grassGrowing) return;
+    
+    // Throttle scroll events for performance
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+        if (scrollTimeout) {
+            cancelAnimationFrame(scrollTimeout);
+        }
+        
+        scrollTimeout = requestAnimationFrame(() => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollDelta = scrollTop - lastScrollTop;
+            
+            // Subtle parallax effect for grass elements
+            if (scrollDelta > 0) {
+                // Scrolling down - grass moves slightly
+                const parallaxY = Math.min(scrollTop * 0.05, 15);
+                grassRoll.style.transform = `translateY(${parallaxY}px)`;
+                
+                // Add subtle opacity change
+                const opacity = Math.min(0.3 + (scrollTop * 0.0001), 0.5);
+                grassGrowing.style.opacity = opacity;
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    }, { passive: true });
+    
+    // Add wind effect on mouse move (desktop only)
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        let mouseTimeout;
+        document.addEventListener('mousemove', (e) => {
+            if (mouseTimeout) {
+                cancelAnimationFrame(mouseTimeout);
+            }
+            
+            mouseTimeout = requestAnimationFrame(() => {
+                const mouseX = e.clientX / window.innerWidth;
+                
+                // Subtle grass sway based on mouse position
+                const swayX = (mouseX - 0.5) * 3; // -1.5 to 1.5 pixels
+                const currentTransform = grassRoll.style.transform || '';
+                const currentY = currentTransform.match(/translateY\(([^)]+)\)/) ? 
+                    currentTransform.match(/translateY\(([^)]+)\)/)[1] : '0px';
+                grassRoll.style.transform = `translateX(${swayX}px) translateY(${currentY})`;
+            });
+        }, { passive: true });
+    }
+    
+    // Add periodic grass "growth" pulse effect
+    setInterval(() => {
+        if (grassGrowing) {
+            grassGrowing.style.animation = 'none';
+            setTimeout(() => {
+                grassGrowing.style.animation = 'grassGrow 2s ease-out';
+            }, 10);
+        }
+    }, 10000); // Every 10 seconds
+}
 
 // Initialize Particle System
 function initializeParticles() {
@@ -31,12 +99,22 @@ function initializeParticles() {
 
 function createParticle(container) {
     const particle = document.createElement('div');
-    particle.classList.add('particle');
     
-    // Random size between 2px and 8px
-    const size = Math.random() * 6 + 2;
-    particle.style.width = size + 'px';
-    particle.style.height = size + 'px';
+    // 30% chance to create a grass blade particle instead of circle
+    const isGrassBlade = Math.random() < 0.3;
+    
+    if (isGrassBlade) {
+        particle.classList.add('particle', 'grass-blade');
+        // Random rotation for grass blade
+        const rotation = (Math.random() - 0.5) * 20; // -10 to 10 degrees
+        particle.style.transform = `rotate(${rotation}deg)`;
+    } else {
+        particle.classList.add('particle');
+        // Random size between 2px and 8px
+        const size = Math.random() * 6 + 2;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+    }
     
     // Random starting position
     particle.style.left = Math.random() * 100 + '%';
@@ -50,18 +128,20 @@ function createParticle(container) {
     
     // Random color variation - green/cyan themed
     const colorVariation = Math.random();
-    if (colorVariation > 0.66) {
-        // Cyan particles
-        particle.style.background = 'radial-gradient(circle, rgba(6, 182, 212, 0.8) 0%, rgba(6, 182, 212, 0.4) 30%, transparent 70%)';
-        particle.style.boxShadow = '0 0 10px rgba(6, 182, 212, 0.5)';
-    } else if (colorVariation > 0.33) {
-        // Green particles
-        particle.style.background = 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 30%, transparent 70%)';
-        particle.style.boxShadow = '0 0 10px rgba(16, 185, 129, 0.5)';
-    } else {
-        // Light green particles
-        particle.style.background = 'radial-gradient(circle, rgba(52, 211, 153, 0.6) 0%, rgba(52, 211, 153, 0.3) 40%, transparent 70%)';
-        particle.style.boxShadow = '0 0 8px rgba(52, 211, 153, 0.4)';
+    if (!isGrassBlade) {
+        if (colorVariation > 0.66) {
+            // Cyan particles
+            particle.style.background = 'radial-gradient(circle, rgba(6, 182, 212, 0.8) 0%, rgba(6, 182, 212, 0.4) 30%, transparent 70%)';
+            particle.style.boxShadow = '0 0 10px rgba(6, 182, 212, 0.5)';
+        } else if (colorVariation > 0.33) {
+            // Green particles
+            particle.style.background = 'radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, rgba(16, 185, 129, 0.4) 30%, transparent 70%)';
+            particle.style.boxShadow = '0 0 10px rgba(16, 185, 129, 0.5)';
+        } else {
+            // Light green particles
+            particle.style.background = 'radial-gradient(circle, rgba(52, 211, 153, 0.6) 0%, rgba(52, 211, 153, 0.3) 40%, transparent 70%)';
+            particle.style.boxShadow = '0 0 8px rgba(52, 211, 153, 0.4)';
+        }
     }
     
     container.appendChild(particle);

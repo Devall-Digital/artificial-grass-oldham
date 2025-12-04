@@ -67,6 +67,33 @@ body {
     animation: bgPulse 8s ease-in-out infinite;
 }
 
+/* Grass Texture Overlay */
+.animated-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 98px,
+            rgba(16, 185, 129, 0.02) 98px,
+            rgba(16, 185, 129, 0.02) 100px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(52, 211, 153, 0.01) 2px,
+            rgba(52, 211, 153, 0.01) 4px
+        );
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 @keyframes bgPulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
@@ -89,6 +116,177 @@ body {
     border-radius: 50%;
     background: radial-gradient(circle, rgba(16, 185, 129, 0.6) 0%, transparent 70%);
     animation: particleFloat 20s infinite linear;
+}
+
+/* Grass Blade Particles */
+.particle.grass-blade {
+    border-radius: 0;
+    width: 3px;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(16, 185, 129, 0.8), rgba(52, 211, 153, 0.4));
+    transform-origin: bottom center;
+    animation: grassBladeFloat 15s infinite linear;
+}
+
+@keyframes grassBladeFloat {
+    0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg) scale(0);
+        opacity: 0;
+    }
+    5% {
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(50vh) translateX(30px) rotate(5deg) scale(1);
+        opacity: 1;
+    }
+    95% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-10vh) translateX(60px) rotate(-5deg) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* Grass Rolling Animation */
+.grass-roll-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.grass-roll {
+    position: absolute;
+    bottom: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, 
+        rgba(16, 185, 129, 0.3) 0%,
+        rgba(16, 185, 129, 0.2) 30%,
+        rgba(16, 185, 129, 0.1) 60%,
+        transparent 100%
+    );
+    background-image: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(16, 185, 129, 0.1) 2px,
+            rgba(16, 185, 129, 0.1) 4px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 3px,
+            rgba(52, 211, 153, 0.05) 3px,
+            rgba(52, 211, 153, 0.05) 6px
+        );
+    animation: grassRollOut 2s ease-out forwards;
+    animation-delay: 0.5s;
+    transform-origin: left center;
+}
+
+@keyframes grassRollOut {
+    0% {
+        left: -100%;
+        transform: scaleX(0);
+    }
+    50% {
+        transform: scaleX(1.05);
+    }
+    100% {
+        left: 0;
+        transform: scaleX(1);
+    }
+}
+
+/* Grass Growing Background */
+.grass-growing-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(to top, 
+        rgba(16, 185, 129, 0.15) 0%,
+        rgba(16, 185, 129, 0.1) 20%,
+        rgba(16, 185, 129, 0.05) 40%,
+        transparent 100%
+    );
+    z-index: -1;
+    opacity: 0;
+    animation: grassGrow 3s ease-out forwards;
+    animation-delay: 1s;
+    mask-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.3) 2px,
+            rgba(0, 0, 0, 0.3) 4px
+        );
+    -webkit-mask-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.3) 2px,
+            rgba(0, 0, 0, 0.3) 4px
+        );
+}
+
+@keyframes grassGrow {
+    0% {
+        opacity: 0;
+        height: 0;
+        transform: translateY(100%);
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+        height: 300px;
+        transform: translateY(0);
+    }
+}
+
+/* Grass Wave Animation */
+.grass-roll::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to top, 
+        rgba(16, 185, 129, 0.2) 0%,
+        transparent 100%
+    );
+    animation: grassWave 3s ease-in-out infinite;
+    transform-origin: bottom;
+}
+
+@keyframes grassWave {
+    0%, 100% {
+        transform: scaleY(1) skewX(0deg);
+    }
+    25% {
+        transform: scaleY(1.1) skewX(2deg);
+    }
+    50% {
+        transform: scaleY(1) skewX(0deg);
+    }
+    75% {
+        transform: scaleY(1.1) skewX(-2deg);
+    }
 }
 
 @keyframes particleFloat {
@@ -141,19 +339,37 @@ body {
 .shape-grass-1 {
     width: 20px;
     height: 60px;
-    animation: shapeRotate 25s infinite linear;
+    animation: shapeRotate 25s infinite linear, grassSway 4s ease-in-out infinite;
+    animation-delay: 0s, 0s;
 }
 
 .shape-grass-2 {
     width: 20px;
     height: 60px;
-    animation: shapeRotate 30s infinite linear reverse;
+    animation: shapeRotate 30s infinite linear reverse, grassSway 5s ease-in-out infinite;
+    animation-delay: 0s, 1s;
 }
 
 .shape-grass-3 {
     width: 20px;
     height: 60px;
-    animation: shapeRotate 35s infinite linear;
+    animation: shapeRotate 35s infinite linear, grassSway 4.5s ease-in-out infinite;
+    animation-delay: 0s, 2s;
+}
+
+@keyframes grassSway {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(5deg);
+    }
+    50% {
+        transform: rotate(0deg);
+    }
+    75% {
+        transform: rotate(-5deg);
+    }
 }
 
 @keyframes shapeRotate {
@@ -309,6 +525,7 @@ body {
     width: 100%;
     box-sizing: border-box;
     scroll-margin-top: 80px;
+    overflow: hidden;
 }
 
 @keyframes fadeInUp {
@@ -480,6 +697,14 @@ body {
     .hero-visual {
         height: 300px;
         margin-top: 2rem;
+    }
+    
+    .grass-roll-container {
+        height: 150px;
+    }
+    
+    .grass-growing-bg {
+        height: 200px;
     }
 }
 
