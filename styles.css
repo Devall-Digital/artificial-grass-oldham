@@ -99,282 +99,136 @@ body {
     50% { opacity: 0.7; }
 }
 
-/* Particles Container */
-.particles-container {
+/* Grass Field Background - Low Angle View */
+.grass-field {
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     z-index: -2;
     pointer-events: none;
     overflow: hidden;
+    perspective: 1000px;
+    perspective-origin: center bottom;
 }
 
-.particle {
+.grass-blade {
     position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.6) 0%, transparent 70%);
-    animation: particleFloat 20s infinite linear;
-}
-
-/* Grass Blade Particles */
-.particle.grass-blade {
-    border-radius: 0;
+    bottom: 0;
     width: 3px;
-    height: 20px;
-    background: linear-gradient(to bottom, rgba(16, 185, 129, 0.8), rgba(52, 211, 153, 0.4));
-    transform-origin: bottom center;
-    animation: grassBladeFloat 15s infinite linear;
-}
-
-@keyframes grassBladeFloat {
-    0% {
-        transform: translateY(100vh) translateX(0) rotate(0deg) scale(0);
-        opacity: 0;
-    }
-    5% {
-        opacity: 0.8;
-    }
-    50% {
-        transform: translateY(50vh) translateX(30px) rotate(5deg) scale(1);
-        opacity: 1;
-    }
-    95% {
-        opacity: 0.8;
-    }
-    100% {
-        transform: translateY(-10vh) translateX(60px) rotate(-5deg) scale(0.8);
-        opacity: 0;
-    }
-}
-
-/* Grass Rolling Animation */
-.grass-roll-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     height: 200px;
-    overflow: hidden;
-    z-index: 0;
-    pointer-events: none;
-}
-
-.grass-roll {
-    position: absolute;
-    bottom: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, 
-        rgba(16, 185, 129, 0.3) 0%,
-        rgba(16, 185, 129, 0.2) 30%,
-        rgba(16, 185, 129, 0.1) 60%,
-        transparent 100%
+    background: linear-gradient(to top,
+        rgba(16, 185, 129, 0.9) 0%,
+        rgba(16, 185, 129, 0.7) 30%,
+        rgba(52, 211, 153, 0.5) 60%,
+        rgba(52, 211, 153, 0.3) 100%
     );
-    background-image: 
-        repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 2px,
-            rgba(16, 185, 129, 0.1) 2px,
-            rgba(16, 185, 129, 0.1) 4px
-        ),
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 3px,
-            rgba(52, 211, 153, 0.05) 3px,
-            rgba(52, 211, 153, 0.05) 6px
-        );
-    animation: grassRollOut 2s ease-out forwards;
-    animation-delay: 0.5s;
-    transform-origin: left center;
+    transform-origin: bottom center;
+    border-radius: 2px 2px 0 0;
+    opacity: 0.6;
 }
 
-@keyframes grassRollOut {
-    0% {
-        left: -100%;
-        transform: scaleX(0);
-    }
-    50% {
-        transform: scaleX(1.05);
-    }
-    100% {
-        left: 0;
-        transform: scaleX(1);
-    }
+/* Create depth with multiple layers */
+.grass-blade.layer-1 {
+    height: 150px;
+    opacity: 0.4;
+    filter: blur(1px);
 }
 
-/* Grass Growing Background */
-.grass-growing-bg {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 300px;
-    background: linear-gradient(to top, 
-        rgba(16, 185, 129, 0.15) 0%,
-        rgba(16, 185, 129, 0.1) 20%,
-        rgba(16, 185, 129, 0.05) 40%,
-        transparent 100%
-    );
-    z-index: -1;
-    opacity: 0;
-    animation: grassGrow 3s ease-out forwards;
-    animation-delay: 1s;
-    mask-image: 
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 0, 0, 0.3) 2px,
-            rgba(0, 0, 0, 0.3) 4px
-        );
-    -webkit-mask-image: 
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 0, 0, 0.3) 2px,
-            rgba(0, 0, 0, 0.3) 4px
-        );
+.grass-blade.layer-2 {
+    height: 180px;
+    opacity: 0.5;
+    filter: blur(0.5px);
 }
 
-@keyframes grassGrow {
-    0% {
-        opacity: 0;
-        height: 0;
-        transform: translateY(100%);
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 1;
-        height: 300px;
-        transform: translateY(0);
-    }
+.grass-blade.layer-3 {
+    height: 200px;
+    opacity: 0.6;
 }
 
-/* Grass Wave Animation */
-.grass-roll::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 20px;
-    background: linear-gradient(to top, 
-        rgba(16, 185, 129, 0.2) 0%,
-        transparent 100%
-    );
-    animation: grassWave 3s ease-in-out infinite;
-    transform-origin: bottom;
+.grass-blade.layer-4 {
+    height: 220px;
+    opacity: 0.7;
 }
 
-@keyframes grassWave {
-    0%, 100% {
-        transform: scaleY(1) skewX(0deg);
-    }
-    25% {
-        transform: scaleY(1.1) skewX(2deg);
-    }
-    50% {
-        transform: scaleY(1) skewX(0deg);
-    }
-    75% {
-        transform: scaleY(1.1) skewX(-2deg);
-    }
+.grass-blade.layer-5 {
+    height: 250px;
+    opacity: 0.8;
 }
 
-@keyframes particleFloat {
-    0% {
-        transform: translateY(100vh) translateX(0) scale(0);
-        opacity: 0;
-    }
-    5% {
-        opacity: 0.8;
-    }
-    50% {
-        transform: translateY(50vh) translateX(50px) scale(1);
-        opacity: 1;
-    }
-    95% {
-        opacity: 0.8;
-    }
-    100% {
-        transform: translateY(-10vh) translateX(100px) scale(0.8);
-        opacity: 0;
-    }
+/* Wind sway animation - different speeds for natural movement */
+.grass-blade {
+    animation: grassSway 3s ease-in-out infinite;
 }
 
-/* Geometric Shapes */
-.geometric-shapes {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    pointer-events: none;
-    overflow: hidden;
+.grass-blade.layer-1 {
+    animation-duration: 2.5s;
+    animation-delay: 0s;
 }
 
-.shape {
-    position: absolute;
-    opacity: 0.08;
-    color: var(--primary-green);
-    transition: opacity 0.3s ease;
-    will-change: transform, opacity;
+.grass-blade.layer-2 {
+    animation-duration: 3s;
+    animation-delay: 0.2s;
 }
 
-.shape svg {
-    width: 100%;
-    height: 100%;
-    filter: drop-shadow(0 0 10px currentColor);
+.grass-blade.layer-3 {
+    animation-duration: 3.5s;
+    animation-delay: 0.4s;
 }
 
-.shape-grass-1 {
-    width: 20px;
-    height: 60px;
-    animation: shapeRotate 25s infinite linear, grassSway 4s ease-in-out infinite;
-    animation-delay: 0s, 0s;
+.grass-blade.layer-4 {
+    animation-duration: 4s;
+    animation-delay: 0.6s;
 }
 
-.shape-grass-2 {
-    width: 20px;
-    height: 60px;
-    animation: shapeRotate 30s infinite linear reverse, grassSway 5s ease-in-out infinite;
-    animation-delay: 0s, 1s;
-}
-
-.shape-grass-3 {
-    width: 20px;
-    height: 60px;
-    animation: shapeRotate 35s infinite linear, grassSway 4.5s ease-in-out infinite;
-    animation-delay: 0s, 2s;
+.grass-blade.layer-5 {
+    animation-duration: 4.5s;
+    animation-delay: 0.8s;
 }
 
 @keyframes grassSway {
     0%, 100% {
-        transform: rotate(0deg);
+        transform: rotate(0deg) translateX(0);
     }
     25% {
-        transform: rotate(5deg);
+        transform: rotate(8deg) translateX(2px);
     }
     50% {
-        transform: rotate(0deg);
+        transform: rotate(0deg) translateX(0);
     }
     75% {
-        transform: rotate(-5deg);
+        transform: rotate(-8deg) translateX(-2px);
     }
 }
 
-@keyframes shapeRotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Stronger wind gusts */
+.grass-blade.gust-1 {
+    animation: grassSwayStrong 4s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.grass-blade.gust-2 {
+    animation: grassSwayStrong 5s ease-in-out infinite;
+    animation-delay: 2.5s;
+}
+
+@keyframes grassSwayStrong {
+    0%, 100% {
+        transform: rotate(0deg) translateX(0);
+    }
+    20% {
+        transform: rotate(12deg) translateX(4px);
+    }
+    40% {
+        transform: rotate(0deg) translateX(0);
+    }
+    60% {
+        transform: rotate(-12deg) translateX(-4px);
+    }
+    80% {
+        transform: rotate(0deg) translateX(0);
+    }
 }
 
 /* Navigation */
@@ -526,6 +380,7 @@ body {
     box-sizing: border-box;
     scroll-margin-top: 80px;
     overflow: hidden;
+    z-index: 1;
 }
 
 @keyframes fadeInUp {
@@ -699,13 +554,19 @@ body {
         margin-top: 2rem;
     }
     
-    .grass-roll-container {
-        height: 150px;
+    .grass-field {
+        height: 80vh;
     }
     
-    .grass-growing-bg {
-        height: 200px;
+    .grass-blade {
+        height: 120px;
     }
+    
+    .grass-blade.layer-1 { height: 90px; }
+    .grass-blade.layer-2 { height: 110px; }
+    .grass-blade.layer-3 { height: 120px; }
+    .grass-blade.layer-4 { height: 140px; }
+    .grass-blade.layer-5 { height: 160px; }
 }
 
 /* Quote Form Section */
