@@ -169,9 +169,10 @@ document.addEventListener('DOMContentLoaded', function() {
         top: 0;
         left: 0;
         height: 3px;
-        background: var(--accent-green);
+        background: linear-gradient(90deg, #00ff88, #00d4ff);
         z-index: 10000;
         transition: width 0.2s ease;
+        box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
     `;
     document.body.appendChild(progressBar);
     
@@ -216,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
         left: 0;
         width: 100%;
         height: 100%;
-        background: var(--primary-black);
+        background: #050508;
         z-index: 10000;
         transform: translateY(100%);
         transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -282,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
         wrapper.style.cssText = `
             position: relative;
             overflow: hidden;
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.1) 25%, rgba(0, 212, 255, 0.1) 50%, rgba(0, 255, 136, 0.1) 75%);
             background-size: 200% 100%;
             animation: loading 1.5s infinite;
         `;

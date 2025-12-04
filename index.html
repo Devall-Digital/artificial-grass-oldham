@@ -50,7 +50,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/style.css?v=6">
+    <link rel="stylesheet" href="css/style.css?v=7">
     <link rel="stylesheet" href="css/animations.css">
     
     <!-- Favicon -->
@@ -134,19 +134,10 @@
     <!-- Skip to content link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- Enhanced Background Animation -->
-    <div class="background-animation">
-        <div class="floating-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
-            <div class="shape shape-4"></div>
-            <div class="shape shape-5"></div>
-            <div class="shape shape-6"></div>
-            <div class="shape shape-7"></div>
-        </div>
-        <div class="morphing-blob"></div>
-    </div>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    <div class="particles-container" id="particles"></div>
+    <div class="geometric-shapes" id="geometric-shapes"></div>
     
     <!-- Header -->
     <header class="header">
@@ -174,12 +165,12 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="hero" id="main-content">
+    <section id="home" class="hero">
         <div class="hero-background">
             <div class="hero-overlay"></div>
         </div>
         <div class="container">
-            <div class="hero-content">
+            <div class="hero-content" id="main-content">
                 <div class="hero-text fade-in-up">
                     <h1 class="hero-title reveal-text">
                         Compare Free <span class="accent">Artificial Grass Quotes</span> 
@@ -719,5 +710,6 @@
     <!-- Scripts -->
     <script src="js/script.js"></script>
     <script src="js/animations.js"></script>
+    <script src="js/enhanced-animations.js"></script>
 </body>
 </html>

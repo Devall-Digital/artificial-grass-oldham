@@ -1,531 +1,209 @@
 /**
- * ARTIFICIAL GRASS OLDHAM - FUTURISTIC ENHANCED ANIMATIONS
- * Mobile-Optimized, Performance-Focused Interactions
+ * Enhanced Animations for Artificial Grass Oldham
+ * Particle system, geometric shapes, and advanced visual effects
  */
 
+// Initialize on DOM load
 document.addEventListener('DOMContentLoaded', function() {
+    initializeParticles();
+    initializeGeometricShapes();
+    initializeScrollAnimations();
+});
+
+// Initialize Particle System
+function initializeParticles() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
     
-    // =================================================================
-    // PERFORMANCE OPTIMIZATIONS
-    // =================================================================
+    const particleCount = 50;
     
-    // Check if device is mobile/touch
-    const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const isLowPower = navigator.hardwareConcurrency <= 4;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
-    // Disable heavy animations on mobile/low power devices
-    if (isMobile || isLowPower || prefersReducedMotion) {
-        document.body.classList.add('reduced-motion');
+    for (let i = 0; i < particleCount; i++) {
+        createParticle(particlesContainer);
     }
     
-    // =================================================================
-    // MOBILE-OPTIMIZED NAVIGATION
-    // =================================================================
-    
-    function initMobileNavigation() {
-        const navToggle = document.getElementById('nav-toggle');
-        const navMenu = document.getElementById('nav-menu');
-        
-        if (navToggle && navMenu) {
-            navToggle.addEventListener('click', function() {
-                navToggle.classList.toggle('active');
-                navMenu.classList.toggle('active');
-                document.body.classList.toggle('nav-open');
-            });
-            
-            // Close menu when clicking on a link
-            const navLinks = navMenu.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    navToggle.classList.remove('active');
-                    navMenu.classList.remove('active');
-                    document.body.classList.remove('nav-open');
-                });
-            });
-            
-            // Close menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                    navToggle.classList.remove('active');
-                    navMenu.classList.remove('active');
-                    document.body.classList.remove('nav-open');
-                }
-            });
+    // Add new particles periodically
+    setInterval(() => {
+        if (particlesContainer.children.length < particleCount) {
+            createParticle(particlesContainer);
         }
+    }, 2000);
+}
+
+function createParticle(container) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    
+    // Random size between 2px and 8px
+    const size = Math.random() * 6 + 2;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    
+    // Random starting position
+    particle.style.left = Math.random() * 100 + '%';
+    
+    // Random animation duration
+    const duration = Math.random() * 10 + 15; // 15-25 seconds
+    particle.style.animationDuration = duration + 's';
+    
+    // Random delay
+    particle.style.animationDelay = Math.random() * 5 + 's';
+    
+    // Random color variation - grass themed (green, cyan)
+    const colorVariation = Math.random();
+    if (colorVariation > 0.5) {
+        // Cyan particles
+        particle.style.background = 'radial-gradient(circle, rgba(0, 212, 255, 0.8) 0%, rgba(0, 212, 255, 0.4) 30%, transparent 70%)';
+        particle.style.boxShadow = '0 0 10px rgba(0, 212, 255, 0.5)';
+    } else {
+        // Green grass particles
+        particle.style.background = 'radial-gradient(circle, rgba(0, 255, 136, 0.8) 0%, rgba(0, 255, 136, 0.4) 30%, transparent 70%)';
+        particle.style.boxShadow = '0 0 10px rgba(0, 255, 136, 0.5)';
     }
     
-    // =================================================================
-    // OPTIMIZED INTERSECTION OBSERVER
-    // =================================================================
+    container.appendChild(particle);
     
-    function initOptimizedIntersectionObserver() {
-        if (!('IntersectionObserver' in window)) {
-            // Fallback for older browsers
-            document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right, .scale-in').forEach(el => {
-                el.classList.add('animate');
-            });
-            return;
+    // Remove particle after animation completes
+    setTimeout(() => {
+        if (particle.parentNode) {
+            particle.remove();
         }
+    }, duration * 1000);
+}
+
+// Initialize Geometric Shapes
+function initializeGeometricShapes() {
+    const shapesContainer = document.getElementById('geometric-shapes');
+    if (!shapesContainer) return;
+    
+    // Create grass blade SVG shapes
+    const shapes = [
+        createGrassBladeShape(),
+        createGrassBladeShape(),
+        createGrassBladeShape(),
+        createGrassBladeShape(),
+        createGrassBladeShape()
+    ];
+    
+    shapes.forEach((shape, index) => {
+        const shapeElement = document.createElement('div');
+        shapeElement.classList.add('shape');
+        shapeElement.innerHTML = shape;
         
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        // Random positioning
+        shapeElement.style.left = Math.random() * 80 + 10 + '%';
+        shapeElement.style.top = Math.random() * 80 + 10 + '%';
         
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                    // Unobserve after animation to improve performance
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
+        // Random size
+        const size = Math.random() * 60 + 40; // 40-100px
+        shapeElement.style.width = size + 'px';
+        shapeElement.style.height = size + 'px';
         
-        // Observe all animation elements
-        const animatedElements = document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right, .scale-in, .stagger-animation');
-        animatedElements.forEach(el => observer.observe(el));
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED SCROLL EFFECTS
-    // =================================================================
-    
-    function initScrollEffects() {
-        if (isMobile || prefersReducedMotion) return;
+        // Random animation delay
+        shapeElement.style.animationDelay = Math.random() * 5 + 's';
         
-        let ticking = false;
-        
-        function updateScrollEffects() {
-            const scrolled = window.pageYOffset;
-            const header = document.querySelector('.header');
-            
-            if (header) {
-                if (scrolled > 100) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            }
-            
-            // Optimized parallax for background shapes
-            const shapes = document.querySelectorAll('.shape');
-            if (shapes.length > 0) {
-                shapes.forEach((shape, index) => {
-                    const speed = 0.3 + (index * 0.05);
-                    const yPos = -(scrolled * speed);
-                    shape.style.transform = `translateY(${yPos}px) translateZ(0)`;
-                });
-            }
-            
-            ticking = false;
-        }
-        
-        function requestTick() {
-            if (!ticking) {
-                requestAnimationFrame(updateScrollEffects);
-                ticking = true;
-            }
-        }
-        
-        window.addEventListener('scroll', requestTick, { passive: true });
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED FORM INTERACTIONS
-    // =================================================================
-    
-    function initFormInteractions() {
-        const forms = document.querySelectorAll('form');
-        
-        forms.forEach(form => {
-            // Add floating label effect
-            const inputs = form.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                if (input.value) {
-                    input.parentElement.classList.add('has-value');
-                }
-                
-                input.addEventListener('focus', function() {
-                    this.parentElement.classList.add('focused');
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.classList.remove('focused');
-                    if (this.value) {
-                        this.parentElement.classList.add('has-value');
-                    } else {
-                        this.parentElement.classList.remove('has-value');
-                    }
-                });
-                
-                input.addEventListener('input', function() {
-                    if (this.value) {
-                        this.parentElement.classList.add('has-value');
-                    } else {
-                        this.parentElement.classList.remove('has-value');
-                    }
-                });
-            });
-            
-            // Form submission handling
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const submitBtn = this.querySelector('button[type="submit"]');
-                if (submitBtn) {
-                    const originalText = submitBtn.innerHTML;
-                    submitBtn.innerHTML = '<span>Processing...</span>';
-                    submitBtn.disabled = true;
-                    
-                    // Simulate form submission
-                    setTimeout(() => {
-                        submitBtn.innerHTML = '<span>Success!</span>';
-                        submitBtn.style.background = 'var(--success-green)';
-                        
-                        setTimeout(() => {
-                            this.reset();
-                            submitBtn.innerHTML = originalText;
-                            submitBtn.disabled = false;
-                            submitBtn.style.background = '';
-                            
-                            // Remove has-value classes
-                            inputs.forEach(input => {
-                                input.parentElement.classList.remove('has-value');
-                            });
-                        }, 2000);
-                    }, 1500);
-                }
-            });
-        });
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED BUTTON INTERACTIONS
-    // =================================================================
-    
-    function initButtonInteractions() {
-        const buttons = document.querySelectorAll('.btn');
-        
-        buttons.forEach(button => {
-            // Add ripple effect for touch devices
-            if (isMobile) {
-                button.addEventListener('touchstart', function(e) {
-                    const ripple = document.createElement('span');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.touches[0].clientX - rect.left - size / 2;
-                    const y = e.touches[0].clientY - rect.top - size / 2;
-                    
-                    ripple.style.cssText = `
-                        position: absolute;
-                        width: ${size}px;
-                        height: ${size}px;
-                        left: ${x}px;
-                        top: ${y}px;
-                        background: rgba(255, 255, 255, 0.3);
-                        border-radius: 50%;
-                        transform: scale(0);
-                        animation: ripple 0.6s linear;
-                        pointer-events: none;
-                    `;
-                    
-                    this.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                });
-            }
-            
-            // Add magnetic effect for desktop
-            if (!isMobile) {
-                button.addEventListener('mousemove', function(e) {
-                    const rect = this.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    
-                    this.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-                });
-                
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translate(0, 0)';
-                });
-            }
-        });
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED LOADING ANIMATIONS
-    // =================================================================
-    
-    function initLoadingAnimations() {
-        const loadingProgress = document.getElementById('loading-progress');
-        
-        if (loadingProgress) {
-            let progress = 0;
-            
-            const loadingInterval = setInterval(() => {
-                progress += Math.random() * 10 + 5;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(loadingInterval);
-                }
-                loadingProgress.style.width = progress + '%';
-            }, 300);
-        }
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED TEXT REVEAL
-    // =================================================================
-    
-    function initTextReveal() {
-        if (isMobile || prefersReducedMotion) {
-            // Disable complex text reveal on mobile
-            document.querySelectorAll('.reveal-text span').forEach(span => {
-                span.style.animation = 'none';
-                span.style.opacity = '1';
-                span.style.transform = 'none';
-            });
-            return;
-        }
-        
-        const revealElements = document.querySelectorAll('.reveal-text');
-        
-        revealElements.forEach(element => {
-            const words = element.querySelectorAll('.word');
-            words.forEach((word, index) => {
-                word.style.animationDelay = `${index * 0.1}s`;
-            });
-        });
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED PERFORMANCE MONITORING
-    // =================================================================
-    
-    function initPerformanceMonitoring() {
-        // Monitor frame rate
-        let frameCount = 0;
-        let lastTime = performance.now();
-        
-        function checkFrameRate() {
-            frameCount++;
-            const currentTime = performance.now();
-            
-            if (currentTime - lastTime >= 1000) {
-                const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
-                
-                // If FPS is low, disable heavy animations
-                if (fps < 30 && !document.body.classList.contains('reduced-motion')) {
-                    document.body.classList.add('reduced-motion');
-                    console.log('Low FPS detected, reducing animations');
-                }
-                
-                frameCount = 0;
-                lastTime = currentTime;
-            }
-            
-            requestAnimationFrame(checkFrameRate);
-        }
-        
-        if (!isMobile) {
-            requestAnimationFrame(checkFrameRate);
-        }
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED UTILITY FUNCTIONS
-    // =================================================================
-    
-    function throttle(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-    
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED SMOOTH SCROLLING
-    // =================================================================
-    
-    function initSmoothScrolling() {
-        const links = document.querySelectorAll('a[href^="#"]');
-        
-        links.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
-                    const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED LAZY LOADING
-    // =================================================================
-    
-    function initLazyLoading() {
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        img.classList.remove('lazy');
-                        imageObserver.unobserve(img);
-                    }
-                });
-            });
-            
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                imageObserver.observe(img);
-            });
-        }
-    }
-    
-    // =================================================================
-    // MOBILE-OPTIMIZED ACCESSIBILITY
-    // =================================================================
-    
-    function initAccessibility() {
-        // Add focus indicators
-        const focusableElements = document.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        
-        focusableElements.forEach(element => {
-            element.addEventListener('focus', function() {
-                this.style.outline = '2px solid var(--accent-green)';
-                this.style.outlineOffset = '2px';
-            });
-            
-            element.addEventListener('blur', function() {
-                this.style.outline = '';
-                this.style.outlineOffset = '';
-            });
-        });
-        
-        // Add skip link functionality
-        const skipLink = document.querySelector('.skip-link');
-        if (skipLink) {
-            skipLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.focus();
-                    target.scrollIntoView();
-                }
-            });
-        }
-    }
-    
-    // =================================================================
-    // INITIALIZATION
-    // =================================================================
-    
-    // Initialize all functions
-    initMobileNavigation();
-    initOptimizedIntersectionObserver();
-    initScrollEffects();
-    initFormInteractions();
-    initButtonInteractions();
-    initLoadingAnimations();
-    initTextReveal();
-    initPerformanceMonitoring();
-    initSmoothScrolling();
-    initLazyLoading();
-    initAccessibility();
-    
-    // Add CSS for ripple effect
-    if (isMobile) {
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-            
-            .btn {
-                position: relative;
-                overflow: hidden;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    // Add reduced motion styles
-    const reducedMotionStyle = document.createElement('style');
-    reducedMotionStyle.textContent = `
-        .reduced-motion *,
-        .reduced-motion *::before,
-        .reduced-motion *::after {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-        }
-        
-        .reduced-motion .floating-shapes,
-        .reduced-motion .morphing-blob {
-            display: none !important;
-        }
-        
-        .reduced-motion .reveal-text span {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-        }
+        shapesContainer.appendChild(shapeElement);
+    });
+}
+
+function createGrassBladeShape() {
+    // Create SVG grass blade shape
+    return `
+        <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 10 Q45 50 50 100 Q55 150 50 190" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <path d="M50 50 Q48 70 50 90" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="1.5"
+                  stroke-linecap="round"/>
+            <path d="M50 100 Q52 120 50 140" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="1.5"
+                  stroke-linecap="round"/>
+        </svg>
     `;
-    document.head.appendChild(reducedMotionStyle);
+}
+
+// Initialize Scroll Animations
+function initializeScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
     
-    // Handle window resize
-    window.addEventListener('resize', debounce(() => {
-        // Recalculate any layout-dependent elements
-        const header = document.querySelector('.header');
-        if (header) {
-            header.classList.remove('scrolled');
-        }
-    }, 250));
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
     
-    // Handle visibility change (tab switching)
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            // Pause animations when tab is not visible
-            document.body.classList.add('paused');
-        } else {
-            document.body.classList.remove('paused');
-        }
+    // Observe all fade-in-up elements
+    document.querySelectorAll('.fade-in-up').forEach(el => {
+        observer.observe(el);
     });
     
-    console.log('Futuristic animations initialized with mobile optimization');
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const targetPosition = target.offsetTop - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// Parallax effect for hero section
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+    }
+    
+    // Parallax for geometric shapes
+    const shapes = document.querySelectorAll('.geometric-shapes .shape');
+    shapes.forEach((shape, index) => {
+        const speed = (index + 1) * 0.1;
+        shape.style.transform = `translateY(${scrolled * speed}px)`;
+    });
 });
+
+// Cursor interaction for shapes (desktop only)
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.addEventListener('mousemove', (e) => {
+        const shapes = document.querySelectorAll('.geometric-shapes .shape');
+        shapes.forEach((shape) => {
+            const rect = shape.getBoundingClientRect();
+            const shapeCenterX = rect.left + rect.width / 2;
+            const shapeCenterY = rect.top + rect.height / 2;
+            
+            const distance = Math.sqrt(
+                Math.pow(e.clientX - shapeCenterX, 2) + 
+                Math.pow(e.clientY - shapeCenterY, 2)
+            );
+            
+            const maxDistance = 200;
+            if (distance < maxDistance) {
+                const moveX = (e.clientX - shapeCenterX) * 0.05;
+                const moveY = (e.clientY - shapeCenterY) * 0.05;
+                
+                shape.style.transform += ` translate(${moveX}px, ${moveY}px)`;
+                shape.style.opacity = Math.max(0.08, 0.15 - (distance / maxDistance) * 0.07);
+            }
+        });
+    });
+}

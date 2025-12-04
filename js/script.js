@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Header scroll effect
+    // Header scroll effect - Dark theme compatible
     const header = document.querySelector('.header');
     let lastScrollY = window.scrollY;
     
@@ -64,11 +64,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentScrollY = window.scrollY;
         
         if (currentScrollY > 100) {
-            header.style.background = 'rgba(255, 255, 255, 0.95)';
-            header.style.backdropFilter = 'blur(10px)';
+            header.style.background = 'rgba(10, 10, 15, 0.95)';
+            header.style.backdropFilter = 'blur(20px)';
+            header.style.borderBottom = '1px solid rgba(0, 255, 136, 0.3)';
         } else {
-            header.style.background = 'var(--white)';
-            header.style.backdropFilter = 'none';
+            header.style.background = 'rgba(10, 10, 15, 0.8)';
+            header.style.backdropFilter = 'blur(20px)';
+            header.style.borderBottom = '1px solid rgba(0, 255, 136, 0.3)';
         }
         
         lastScrollY = currentScrollY;
